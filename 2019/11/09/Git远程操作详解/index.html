@@ -1,0 +1,509 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Git远程操作详解 - 牛虻的世界</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="description" content="
+Git是目前最流行的版本管理系统，学会Git几乎成了开发者的必备能。Git有很多优势，其中之一就是远程操作非常简便。本文详细介绍5个Git命令，它们的概念和用法，理解了这些内容，你就会完全掌握Gi,"> 
+    <meta name="author" content="Gadfly"> 
+    <link rel="alternative" href="atom.xml" title="牛虻的世界" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link href="https://fonts.loli.net/css?family=Roboto+Mono|Rubik&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_xjbfxy4nzcj.css">
+    <link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+    <link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+    <link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+    <link rel="stylesheet" href="/css/obsidian.css">
+    <link rel="stylesheet" href="/css/ball-atom.min.css">
+</head>
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">牛虻的世界</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="http://blog.gadfly.pub">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">Git远程操作详解</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" target="_blank" rel="noopener" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" target="_blank" rel="noopener" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class= article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url(/img/gadfly.jpg);">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                    <a href="/categories/工具软件"><b>「 </b>工具软件<b> 」</b></a>
+                
+                十一月 09, 2019
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/2019/11/09/Git%E8%BF%9C%E7%A8%8B%E6%93%8D%E4%BD%9C%E8%AF%A6%E8%A7%A3/" title="Git远程操作详解" class="">Git远程操作详解</a></h3>
+            
+                <p class="post-count animated fadeInDown">
+                    
+                        <span>
+                        <b class="iconfont icon-text2"></b> <i>文章字数</i>
+                        8.2k
+                    </span>
+                    
+                    
+                        <span>
+                        <b class="iconfont icon-timer__s"></b> <i>阅读约需</i>
+                        7 mins.
+                    </span>
+                    
+                    
+                    
+                        <span id="busuanzi_container_page_pv">
+                            <b class="iconfont icon-read"></b> <i>阅读次数</i>
+                            <span id="busuanzi_value_page_pv">0</span>
+                        </span>
+                    
+                </p>
+            
+            
+                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/Git/" rel="tag">Git</a></li></ul>
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn slower">
+            <blockquote>
+<p>Git是目前最流行的版本管理系统，学会Git几乎成了开发者的必备能。Git有很多优势，其中之一就是远程操作非常简便。本文详细介绍5个Git命令，它们的概念和用法，理解了这些内容，你就会完全掌握Git远程操作。</p>
+<ul>
+<li>git clone</li>
+<li>git remote</li>
+<li>git fetch</li>
+<li>git pull</li>
+<li>git push</li>
+</ul>
+</blockquote>
+<p>![IMAGE](quiver-image-url/27C395F69767D4DC2DDE59B7D9BCC55C.jpg =800x227)</p>
+<ul>
+<li><h1 id="git-clone"><a href="#git-clone" class="headerlink" title="git clone"></a><code>git clone</code></h1><blockquote>
+<p>从远程主机克隆一个版本库</p>
+</blockquote>
+<pre><code class="shell">git clone &lt;版本库的网址&gt;</code></pre>
+<p>该命令会在本地主机生成一个目录，与远程主机的版本库同名。如果要指定不同的目录名，可以将目录名作为git clone命令的第二个参数。</p>
+<pre><code class="shell">git clone &lt;版本库的网址&gt; &lt;本地目录名&gt;</code></pre>
+<p>git clone支持多种协议，除了HTTP(s)以外，还支持SSH、Git、本地文件协议等。通常来说，Git协议下载速度最快，SSH协议用于需要用户认证的场合。</p>
+<ul>
+<li>克隆版本库的时候，所使用的远程主机自动被Git命名为origin。如果想用其他的主机名，需要用git clone命令的-o选项指定。<pre><code class="shell">$ git clone -o jQuery https://github.com/jquery/jquery.git
+$ git remote
+jQuery</code></pre>
+</li>
+</ul>
+</li>
+<li><h1 id="git-免密码，去除每次输入密码"><a href="#git-免密码，去除每次输入密码" class="headerlink" title="git 免密码，去除每次输入密码"></a><code>git</code> 免密码，去除每次输入密码</h1><pre><code class="shell">$ git clone http://github.com/git_dir
+$ git config credential.helper store
+$ vi ~/git_dir/.git/config
+[credential]
+      helper = store</code></pre>
+</li>
+<li><h1 id="git-remote"><a href="#git-remote" class="headerlink" title="git remote"></a><code>git remote</code></h1><blockquote>
+<p>为了便于管理，Git要求每个远程主机都必须指定一个主机名。git remote命令就用于管理主机名。</p>
+</blockquote>
+<ul>
+<li>不带选项的时候，<code>git remote</code>命令列出所有远程主机。<pre><code class="shell">$ git remote
+origin</code></pre>
+</li>
+<li>使用<code>-v</code>选项，可以参看远程主机的网址。<pre><code class="shell">$ git remote -v
+origin  git@github.com:jquery/jquery.git (fetch)
+origin  git@github.com:jquery/jquery.git (push)</code></pre>
+</li>
+<li><code>git remote show</code> 命令加上主机名，可以查看该主机的详细信息。<pre><code class="shell">$ git remote show &lt;主机名&gt;</code></pre>
+</li>
+<li><code>git remote add</code> 命令用于添加远程主机。<pre><code class="shell">$ git remote add &lt;主机名&gt; &lt;网址&gt;</code></pre>
+</li>
+<li><code>git remote rm</code> 命令用于删除远程主机。<pre><code class="shell">$ git remote rm &lt;主机名&gt;</code></pre>
+</li>
+<li><code>git remote rename</code> 命令用于远程主机的改名。<pre><code class="shell">$ git remote rename &lt;原主机名&gt; &lt;新主机名&gt;</code></pre>
+</li>
+</ul>
+</li>
+<li><h1 id="git-fetch"><a href="#git-fetch" class="headerlink" title="git fetch"></a><code>git fetch</code></h1><blockquote>
+<p>一旦远程主机的版本库有了更新（Git术语叫做commit），需要将这些更新取回本地，这时就要用到git fetch命令。</p>
+</blockquote>
+<pre><code class="shell">$ git fetch &lt;远程主机名&gt;</code></pre>
+<ul>
+<li><p>上面命令将某个远程主机的更新，全部取回本地。</p>
+</li>
+<li><p><code>git fetch</code>命令通常用来查看其他人的进程，因为它取回的代码对你本地的开发代码没有影响。</p>
+</li>
+<li><p>默认情况下，<code>git fetch</code>取回所有分支（branch）的更新。如果只想取回特定分支的更新，可以指定分支名。</p>
+<pre><code class="shell">$ git fetch &lt;远程主机名&gt; &lt;分支名&gt;</code></pre>
+</li>
+<li><p>所取回的更新，在本地主机上要用”远程主机名/分支名”的形式读取。比如<code>origin</code>主机的<code>master</code>，就要用<code>origin/master</code>读取。</p>
+</li>
+<li><p><code>git branch</code> 命令的<code>-r</code>选项，可以用来查看远程分支，<code>-a</code>选项查看所有分支。</p>
+<pre><code class="shell">$ git branch -r
+origin/master
+
+$ git branch -a
+* master
+  remotes/origin/master</code></pre>
+</li>
+<li><p>上面命令表示，本地主机的当前分支是<code>master</code>，远程分支是<code>origin/master</code>。</p>
+</li>
+<li><p>取回远程主机的更新以后，可以在它的基础上，使用<code>git checkout</code>命令创建一个新的分支。</p>
+<pre><code class="shell">$ git checkout -b newBrach origin/master</code></pre>
+</li>
+<li><p>上面命令表示，在<code>origin/master</code>的基础上，创建一个新分支</p>
+</li>
+<li><p>也可以使用<code>git merge</code>命令或者<code>git rebase</code>命令，在本地分支上合并远程分支。</p>
+<pre><code class="shell">$ git merge origin/master
+# 或者
+$ git rebase origin/master</code></pre>
+</li>
+</ul>
+</li>
+<li><h1 id="git-pull"><a href="#git-pull" class="headerlink" title="git pull"></a><code>git pull</code></h1><blockquote>
+<p><code>git pull</code> 命令的作用是，取回远程主机某个分支的更新，再与本地的指定分支合并。它的完整格式稍稍有点复杂。</p>
+</blockquote>
+<pre><code class="shell">  $ git pull &lt;远程主机名&gt; &lt;远程分支名&gt;:&lt;本地分支名&gt;</code></pre>
+<ul>
+<li>取回<code>origin</code>主机的<code>next</code>分支，与本地的<code>master</code>分支合并，需要写成下面这样。<pre><code class="shell">$ git pull origin next:master</code></pre>
+</li>
+<li>如果远程分支是与当前分支合并，则冒号后面的部分可以省略。<pre><code class="shell">$ git pull origin next</code></pre>
+</li>
+<li>上面命令表示，取回<code>origin/next</code>分支，再与当前分支合并。实质上，这等同于先做<code>git fetch</code>，再做<code>git merge</code>。<pre><code class="shell">$ git fetch origin
+$ git merge origin/next</code></pre>
+</li>
+<li>在某些场合，Git会自动在本地分支与远程分支之间，建立一种追踪关系（tracking）。比如，在<code>git clone</code>的时候，所有本地分支默认与远程主机的同名分支，建立追踪关系，也就是说，本地的<code>master</code>分支自动”追踪”<code>origin/master</code>分支。<blockquote>
+<p><code>Git</code>也允许手动建立追踪关系。</p>
+</blockquote>
+<pre><code class="shell">$ git branch --set-upstream master origin/next</code></pre>
+</li>
+<li>上面命令指定<code>master</code>分支追踪<code>origin/next</code>分支。</li>
+<li>如果当前分支与远程分支存在追踪关系，<code>git pull</code>就可以省略远程分支名。<pre><code class="shell">$ git pull origin</code></pre>
+</li>
+<li>上面命令表示，本地的当前分支自动与对应的<code>origin</code>主机”追踪分支”（<code>remote-tracking branch</code>）进行合并。</li>
+<li>如果当前分支只有一个追踪分支，连远程主机名都可以省略。<pre><code class="shell">$ git pull</code></pre>
+</li>
+<li>上面命令表示，当前分支自动与唯一一个追踪分支进行合并。</li>
+<li>如果合并需要采用rebase模式，可以使用–rebase选项。<pre><code class="shell">$ git pull --rebase &lt;远程主机名&gt; &lt;远程分支名&gt;:&lt;本地分支名&gt;</code></pre>
+</li>
+<li>如果远程主机删除了某个分支，默认情况下，<code>git pull</code> 不会在拉取远程分支的时候，删除对应的本地分支。这是为了防止，由于其他人操作了远程主机，导致<code>git pull</code>不知不觉删除了本地分支。</li>
+<li>但是，你可以改变这个行为，加上参数 <code>-p</code>就会在本地删除远程已经删除的分支。<pre><code class="shell">$ git pull -p
+# 等同于下面的命令
+$ git fetch --prune origin 
+$ git fetch -p</code></pre>
+</li>
+</ul>
+</li>
+<li><h1 id="git-push"><a href="#git-push" class="headerlink" title="git push"></a><code>git push</code></h1><blockquote>
+<p><code>git push</code>命令用于将本地分支的更新，推送到远程主机。它的格式与<code>git pull</code>命令相仿。</p>
+</blockquote>
+<pre><code class="shell">$ git push &lt;远程主机名&gt; &lt;本地分支名&gt;:&lt;远程分支名&gt;</code></pre>
+<ul>
+<li>注意，分支推送顺序的写法是<code>&lt;来源地&gt;:&lt;目的地&gt;</code>，所以<code>git pull</code>是<code>&lt;远程分支&gt;:&lt;本地分支&gt;</code>，而<code>git push</code>是<code>&lt;本地分支&gt;:&lt;远程分支&gt;</code>。</li>
+<li>如果省略远程分支名，则表示将本地分支推送与之存在”追踪关系”的远程分支（通常两者同名），如果该远程分支不存在，则会被新建。<pre><code class="shell">$ git push origin master</code></pre>
+</li>
+<li>上面命令表示，将本地的<code>master</code>分支推送到<code>origin</code>主机的<code>master</code>分支。如果后者不存在，则会被新建。</li>
+<li>如果省略本地分支名，则表示删除指定的远程分支，因为这等同于推送一个空的本地分支到远程分支。<pre><code class="shell">$ git push origin :master
+# 等同于
+$ git push origin --delete master</code></pre>
+</li>
+<li>上面命令表示删除origin主机的master分支。</li>
+<li>如果当前分支与远程分支之间存在追踪关系，则本地分支和远程分支都可以省略。<pre><code class="shell">$ git push origin</code></pre>
+</li>
+<li>上面命令表示，将当前分支推送到origin主机的对应分支。</li>
+<li>如果当前分支只有一个追踪分支，那么主机名都可以省略。<pre><code class="shell">$ git push</code></pre>
+</li>
+<li>如果当前分支与多个主机存在追踪关系，则可以使用<code>-u</code>选项指定一个默认主机，这样后面就可以不加任何参数使用<code>git push</code>。<pre><code class="shell">$ git push -u origin master</code></pre>
+</li>
+<li>上面命令将本地的<code>master</code>分支推送到<code>origin</code>主机，同时指定<code>origin</code>为默认主机，后面就可以不加任何参数使用<code>git push</code>了。</li>
+<li>不带任何参数的<code>git push</code>，默认只推送当前分支，这叫做<code>simple</code>方式。此外，还有一种<code>matching</code>方式，会推送所有有对应的远程分支的本地分支。<code>Git 2.0</code>版本之前，默认采用<code>matching</code>方法，现在改为默认采用<code>simple</code>方式。如果要修改这个设置，可以采用<code>git config</code>命令。<pre><code class="shell">$ git config --global push.default matching
+# 或者
+$ git config --global push.default simple</code></pre>
+</li>
+<li>还有一种情况，就是不管是否存在对应的远程分支，将本地的所有分支都推送到远程主机，这时需要使用<code>--all</code>选项。<pre><code class="shell">$ git push --all origin</code></pre>
+</li>
+<li>上面命令表示，将所有本地分支都推送到<code>origin</code>主机。</li>
+<li>如果远程主机的版本比本地版本更新，推送时<code>Git</code>会报错，要求先在本地做<code>git pull</code>合并差异，然后再推送到远程主机。这时，如果你一定要推送，可以使用<code>--force</code>选项。<pre><code class="shell">$ git push --force origin </code></pre>
+</li>
+<li>上面命令使用<code>--force</code>选项，结果导致远程主机上更新的版本被覆盖。除非你很确定要这样做，否则应该尽量避免使用<code>--force</code>选项。</li>
+<li>最后，<code>git push</code>不会推送标签（<code>tag</code>），除非使用<code>--tags</code>选项。<pre><code class="shell">$ git push origin --tags</code></pre>
+</li>
+</ul>
+</li>
+</ul>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="true">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+                <ul id="audio-list" style="display:none">
+                    
+                        
+                            <li title='0' data-url='/statics/chengdu.mp3'></li>
+                        
+                    
+                </ul>
+            
+            
+                
+    <div id='gitalk-container' class="comment link"
+        data-ae='true'
+        data-ci='ec894e2b66f752e8b7fb'
+        data-cs='3ccc2e92bb350688fe2c2dc2930189b62622bfb1'
+        data-r='blog-comments'
+        data-o='TriDiamond'
+        data-a='TriDiamond'
+        data-d=''
+    >留言</div>
+
+
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="https://res.cloudinary.com/tridiamond/image/upload/v1573019751/TriDiamond_logo_ui_xeublz.jpg" height=300 width=300></img>
+                    <p>Gadfly</p>
+                    <span>Think like an artist, develop like an artisan</span>
+                    <dl>
+                        <dd><a href="https://github.com/TriDiamond" target="_blank"><span class=" iconfont icon-github"></span></a></dd>
+                        <dd><a href="https://twitter.com/TriDiamond6" target="_blank"><span class=" iconfont icon-twitter"></span></a></dd>
+                        <dd><a href="https://stackoverflow.com/users/7602324/tridiamond?tab=profile" target="_blank"><span class=" iconfont icon-stack-overflow"></span></a></dd>
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">23 <p>文章</p></a></li>
+                    <li><a href="/categories">17 <p>分类</p></a></li>
+                    <li><a href="/tags">28 <p>标签</p></a></li>
+                </ul>
+            </div>
+            
+                
+                
+                    <div class="box sticky animated fadeInRight faster">
+                        <div id="toc" class="subbox">
+                            <h4>目录</h4>
+                            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#git-clone"><span class="toc-number">1.</span> <span class="toc-text">git clone</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#git-免密码，去除每次输入密码"><span class="toc-number">2.</span> <span class="toc-text">git 免密码，去除每次输入密码</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#git-remote"><span class="toc-number">3.</span> <span class="toc-text">git remote</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#git-fetch"><span class="toc-number">4.</span> <span class="toc-text">git fetch</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#git-pull"><span class="toc-number">5.</span> <span class="toc-text">git pull</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#git-push"><span class="toc-number">6.</span> <span class="toc-text">git push</span></a></li></ol>
+                        </div>
+                    </div>
+                
+            
+        </div>
+    </div>
+</div>
+
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2019
+        <span class="gradient-text">
+            Gadfly
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.0" target="_blank" rel="noopener">v1.4.0</a></small>
+    </p>
+</footer>
+
+    <link rel="stylesheet" href="//cdn.bootcss.com/gitalk/1.5.0/gitalk.min.css">
+    <script src="//cdn.bootcss.com/gitalk/1.5.0/gitalk.min.js"></script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+
+    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+
+    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+
+    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+
+    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+
+    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+
+    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
+
+    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+
+    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+
+    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/java/java.min.js"></script>
+
+    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/sql/sql.min.js"></script>
+
+
+
+    <script src="/js/busuanzi.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            if ($('span[id^="busuanzi_"]').length) {
+                initialBusuanzi();
+            }
+        });
+    </script>
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-149874671-1');
+    </script>
+
+
+
+
+
+<script>
+    function initialTyped () {
+        var typedTextEl = $('.typed-text');
+        if (typedTextEl && typedTextEl.length > 0) {
+            var typed = new Typed('.typed-text', {
+                strings: ["Think like an artist, develop like an artisan", "用艺术家思维去思考问题，用工匠创造精神去开发", "Then am I A happy fly, If I live Or if I die.", "不管我活着，还是我死去，我都是一只快乐的飞来飞去的牛虻"],
+                typeSpeed: 90,
+                loop: true,
+                loopCount: Infinity,
+                backSpeed: 20,
+            });
+        }
+    }
+
+    if ($('.article-header') && $('.article-header').length) {
+        $(document).ready(function () {
+            initialTyped();
+        });
+    }
+</script>
+
+
+</html>
