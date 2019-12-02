@@ -1,0 +1,391 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Oracle数据库备份还原笔记 - 牛虻的世界</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="description" content="
+通过查阅资料知道Oracle备份还原的方式有三种。分别的是导出/导入、热备份和冷备份。导出/导入是一种逻辑备份、而热备份和冷备份是物理备份。这里只记录导出/导入的备份和还原的方式。实际工作中遇到一,"> 
+    <meta name="author" content="Gadfly"> 
+    <link rel="alternative" href="atom.xml" title="牛虻的世界" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link href="https://fonts.loli.net/css?family=Roboto+Mono|Rubik&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_xjbfxy4nzcj.css">
+    <link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+    <link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+    <link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+    <link rel="stylesheet" href="/css/obsidian.css">
+    <link rel="stylesheet" href="/css/ball-atom.min.css">
+</head>
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">牛虻的世界</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="http://blog.gadfly.pub">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">Oracle数据库备份还原笔记</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" target="_blank" rel="noopener" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" target="_blank" rel="noopener" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class= article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url(/img/gadfly.jpg);">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                    <a href="/categories/数据库"><b>「 </b>数据库<b> 」</b></a>
+                
+                十一月 09, 2019
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/2019/11/09/oracle-shu-ju-ku-bei-fen-huan-yuan-bi-ji/" title="Oracle数据库备份还原笔记" class="">Oracle数据库备份还原笔记</a></h3>
+            
+                <p class="post-count animated fadeInDown">
+                    
+                        <span>
+                        <b class="iconfont icon-text2"></b> <i>文章字数</i>
+                        2.5k
+                    </span>
+                    
+                    
+                        <span>
+                        <b class="iconfont icon-timer__s"></b> <i>阅读约需</i>
+                        2 mins.
+                    </span>
+                    
+                    
+                    
+                        <span id="busuanzi_container_page_pv">
+                            <b class="iconfont icon-read"></b> <i>阅读次数</i>
+                            <span id="busuanzi_value_page_pv">0</span>
+                        </span>
+                    
+                </p>
+            
+            
+                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/Oracle/" rel="tag">Oracle</a></li></ul>
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn slower">
+            <blockquote>
+<p>通过查阅资料知道Oracle备份还原的方式有三种。分别的是导出/导入、热备份和冷备份。导出/导入是一种逻辑备份、而热备份和冷备份是物理备份。<br>这里只记录导出/导入的备份和还原的方式。实际工作中遇到一个需求：需要将服务器上的数据库备份，导入自己本机的数据库。相当于把服务器上的对应数据库实例copy一份儿到本地。主要操作步骤如下。</p>
+</blockquote>
+<ol>
+<li><p>数据库导出<br>操作位置：需要备份的数据库，DOS窗口【注意不是SQLPLUS】。</p>
+<pre><code class="shell">exp RSGL_GB_NEW/RSGL@ORCL file=d:\beifen_20190909.dmp owner=(RSGL_GB_NEW)</code></pre>
+<p>这个命令意思是将RSGL_GB_NEW这个库（密码是RSGL）导出。导出的路径是d:\beifen_20190909.dmp。<br>导出完成之后，将这个文件拷贝到需要还原的机器上，进行第二步。   </p>
+</li>
+<li><p>创建表空间<br>操作位置：需要还原数据库的机器，DOS窗口，登录之后进入SQLPLUS窗口</p>
+<pre><code class="shell">C:\Users\zz&gt;sqlplus / as sysdba;
+</code></pre>
+</li>
+</ol>
+<p>SQL*Plus: Release 11.2.0.1.0 Production on 星期五 9月 27 19:13:21 2019</p>
+<p>Copyright (c) 1982, 2010, Oracle.  All rights reserved.</p>
+<p>ERROR:<br>ORA-01031: 权限不足</p>
+<p>请输入用户名:  system<br>输入口令:</p>
+<p>连接到:<br>Oracle Database 11g Enterprise Edition Release 11.2.0.1.0 - 64bit Production<br>With the Partitioning, OLAP, Data Mining and Real Application Testing options</p>
+<p>SQL&gt; create tablespace RSGL_GB_NEW nologging datafile ‘E:\app\oracleServer\product\11.2.0\Oracle\RSGL_GB_NEW.dbf’ size 100m autoextend on next 500M maxsize unlimited;</p>
+<pre><code>表空间已创建。
+登录了数据库，选择一个可以具有创建用户权限的用户账号登录，创建表空间。接着第三步。
+
+3. 创建用户，赋予DBA权限
+操作位置：SQLPLUS窗口
+```sql
+SQL&gt; CREATE USER RSGL_GB_NEW IDENTIFIED BY RSGL DEFAULT TABLESPACE users;
+
+用户已创建。
+
+SQL&gt; GRANT CREATE SESSION,CREATE ANY TABLE,CREATE ANY VIEW ,CREATE ANY INDEX,CREATE ANY PROCEDURE, ALTER ANY TABLE, ALTER ANY PROCEDURE,DROP ANY TABLE,DROP ANY VIEW,DROP ANY INDEX, DROP ANY PROCEDURE,SELECT ANY TABLE,INSERT ANY TABLE,UPDATE ANY TABLE,DELETE ANY TABLE TO RSGL_GB_NEW;
+
+授权成功。
+
+SQL&gt; grant DBA to RSGL_GB_NEW;</code></pre><ol start="4">
+<li>导入数据库<br>操作位置：DOS窗口【 注意 ：是DOS】<pre><code class="shell">C:\Users\zz&gt;imp RSGL_GB_NEW/RSGL fromuser=RSGL_GB_NEW touser=RSGL_GB_NEW file=D:\RSGL_GN_NEW201909270.dmp ignore=y;
+</code></pre>
+</li>
+</ol>
+<p>Import: Release 11.2.0.1.0 - Production on 星期五 9月 27 19:31:10 2019</p>
+<p>Copyright (c) 1982, 2009, Oracle and/or its affiliates.  All rights reserved.</p>
+<p>连接到: Oracle Database 11g Enterprise Edition Release 11.2.0.1.0 - 64bit Production<br>With the Partitioning, OLAP, Data Mining and Real Application Testing options</p>
+<h2 id="开始导入数据了。。。。。。。。"><a href="#开始导入数据了。。。。。。。。" class="headerlink" title="开始导入数据了。。。。。。。。"></a>开始导入数据了。。。。。。。。</h2><p>```<br>我这里因为是导入本地，所以不需要在RSGL_GB_NEW/RSGL后加上 @ORCL 。网上是这么说的，我还没搞明白为什么。<br>对Oracle数据库不熟悉，有可能有没有说明白的地方。如果实际操作过程中遇到错误，可以搜索对应的错误提示，大概率是命令写错了。</p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="true">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+                <ul id="audio-list" style="display:none">
+                    
+                        
+                            <li title='0' data-url='/statics/chengdu.mp3'></li>
+                        
+                    
+                </ul>
+            
+            
+                
+    <div id='gitalk-container' class="comment link"
+        data-ae='true'
+        data-ci='ec894e2b66f752e8b7fb'
+        data-cs='3ccc2e92bb350688fe2c2dc2930189b62622bfb1'
+        data-r='blog-comments'
+        data-o='TriDiamond'
+        data-a='TriDiamond'
+        data-d=''
+    >留言</div>
+
+
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="https://res.cloudinary.com/tridiamond/image/upload/v1573019751/TriDiamond_logo_ui_xeublz.jpg" height=300 width=300></img>
+                    <p>Gadfly</p>
+                    <span>Think like an artist, develop like an artisan</span>
+                    <dl>
+                        <dd><a href="https://github.com/TriDiamond" target="_blank"><span class=" iconfont icon-github"></span></a></dd>
+                        <dd><a href="https://twitter.com/TriDiamond6" target="_blank"><span class=" iconfont icon-twitter"></span></a></dd>
+                        <dd><a href="https://stackoverflow.com/users/7602324/tridiamond?tab=profile" target="_blank"><span class=" iconfont icon-stack-overflow"></span></a></dd>
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">23 <p>文章</p></a></li>
+                    <li><a href="/categories">17 <p>分类</p></a></li>
+                    <li><a href="/tags">28 <p>标签</p></a></li>
+                </ul>
+            </div>
+            
+                
+                
+                    <div class="box sticky animated fadeInRight faster">
+                        <div id="toc" class="subbox">
+                            <h4>目录</h4>
+                            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#开始导入数据了。。。。。。。。"><span class="toc-number">1.</span> <span class="toc-text">开始导入数据了。。。。。。。。</span></a></li></ol>
+                        </div>
+                    </div>
+                
+            
+        </div>
+    </div>
+</div>
+
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2019
+        <span class="gradient-text">
+            Gadfly
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.0" target="_blank" rel="noopener">v1.4.0</a></small>
+    </p>
+</footer>
+
+    <link rel="stylesheet" href="//cdn.bootcss.com/gitalk/1.5.0/gitalk.min.css">
+    <script src="//cdn.bootcss.com/gitalk/1.5.0/gitalk.min.js"></script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+
+    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+
+    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+
+    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+
+    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+
+    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+
+    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
+
+    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+
+    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+
+    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/java/java.min.js"></script>
+
+    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/sql/sql.min.js"></script>
+
+
+
+    <script src="/js/busuanzi.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            if ($('span[id^="busuanzi_"]').length) {
+                initialBusuanzi();
+            }
+        });
+    </script>
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-149874671-1');
+    </script>
+
+
+
+
+
+<script>
+    function initialTyped () {
+        var typedTextEl = $('.typed-text');
+        if (typedTextEl && typedTextEl.length > 0) {
+            var typed = new Typed('.typed-text', {
+                strings: ["Think like an artist, develop like an artisan", "用艺术家思维去思考问题，用工匠创造精神去开发", "Then am I A happy fly, If I live Or if I die.", "不管我活着，还是我死去，我都是一只快乐的飞来飞去的牛虻"],
+                typeSpeed: 90,
+                loop: true,
+                loopCount: Infinity,
+                backSpeed: 20,
+            });
+        }
+    }
+
+    if ($('.article-header') && $('.article-header').length) {
+        $(document).ready(function () {
+            initialTyped();
+        });
+    }
+</script>
+
+
+</html>

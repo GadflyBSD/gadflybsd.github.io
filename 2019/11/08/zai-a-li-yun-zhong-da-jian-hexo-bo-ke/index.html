@@ -1,0 +1,457 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>在阿里云中搭建Hexo博客 - 牛虻的世界</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="description" content="一、前言&amp;emsp;&amp;emsp;由于不想部署在github上，因为Github的访问速度在国内比较慢，所以有了此文。&amp;emsp;&amp;emsp;部署之前先了解一下hexo利于git更新的流程，部署在Gi,"> 
+    <meta name="author" content="Gadfly"> 
+    <link rel="alternative" href="atom.xml" title="牛虻的世界" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link href="https://fonts.loli.net/css?family=Roboto+Mono|Rubik&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_xjbfxy4nzcj.css">
+    <link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+    <link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+    <link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+    <link rel="stylesheet" href="/css/obsidian.css">
+    <link rel="stylesheet" href="/css/ball-atom.min.css">
+</head>
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">牛虻的世界</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="http://blog.gadfly.pub">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">在阿里云中搭建Hexo博客</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" target="_blank" rel="noopener" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" target="_blank" rel="noopener" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class= article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url(/img/gadfly.jpg);">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                    <a href="/categories/云服务器"><b>「 </b>云服务器<b> 」</b></a>
+                
+                十一月 08, 2019
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/2019/11/08/zai-a-li-yun-zhong-da-jian-hexo-bo-ke/" title="在阿里云中搭建Hexo博客" class="">在阿里云中搭建Hexo博客</a></h3>
+            
+                <p class="post-count animated fadeInDown">
+                    
+                        <span>
+                        <b class="iconfont icon-text2"></b> <i>文章字数</i>
+                        4.7k
+                    </span>
+                    
+                    
+                        <span>
+                        <b class="iconfont icon-timer__s"></b> <i>阅读约需</i>
+                        4 mins.
+                    </span>
+                    
+                    
+                    
+                        <span id="busuanzi_container_page_pv">
+                            <b class="iconfont icon-read"></b> <i>阅读次数</i>
+                            <span id="busuanzi_value_page_pv">0</span>
+                        </span>
+                    
+                </p>
+            
+            
+                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/Hexo/" rel="tag">Hexo</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/Markdown/" rel="tag">Markdown</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/%E9%98%BF%E9%87%8C%E4%BA%91/" rel="tag">阿里云</a></li></ul>
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn slower">
+            <h2 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h2><p>&emsp;&emsp;由于不想部署在github上，因为Github的访问速度在国内比较慢，所以有了此文。<br>&emsp;&emsp;部署之前先了解一下hexo利于git更新的流程，部署在Github上和部署在云服务器上没有特别大的本质区别。<br>&emsp;&emsp;整个流程就是本地将 *.md 渲染成静态文件，然后Git推送到服务器的repository,服务器再通过 git-hooks 同步网站根目录。再利于nginx托管这些静态资源，就可以实现快速的访问。</p>
+<h2 id="二、环境安装"><a href="#二、环境安装" class="headerlink" title="二、环境安装"></a>二、环境安装</h2><h3 id="1-本地环境安装（MAC）"><a href="#1-本地环境安装（MAC）" class="headerlink" title="1. 本地环境安装（MAC）"></a>1. 本地环境安装（MAC）</h3><ul>
+<li><p><code>brew</code> 安装</p>
+<pre><code class="shell">  /usr/bin/ruby -e &quot;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)&quot;</code></pre>
+</li>
+<li><p><code>node.js</code> 安装</p>
+<pre><code class="shell">  brew install nodejs
+  npm install -g cnpm --registry=https://registry.npm.taobao.org</code></pre>
+</li>
+<li><p><code>git</code> 安装</p>
+<blockquote>
+<p>系统已经自带，不用单独安装。</p>
+</blockquote>
+</li>
+<li><p><code>hexo</code> 安装</p>
+<pre><code class="shell">  npm install hexo-cli hexo-server -g</code></pre>
+</li>
+<li><p>安装 <code>vs code</code></p>
+</li>
+<li><p>使用git bash生成ssh</p>
+<pre><code class="shell">  ssh-keygen -t rsa</code></pre>
+<p>  在本地服务器中配置好了公钥，接下来我们需要把这个公钥交给服务器，相当于本地机器有了一把能访问服务器的“钥匙”，所以接下来需要配置服务器。</p>
+<h3 id="2-云端服务器环境安装"><a href="#2-云端服务器环境安装" class="headerlink" title="2. 云端服务器环境安装"></a>2. 云端服务器环境安装</h3></li>
+<li><p><code>git</code> 安装</p>
+<ul>
+<li>在云服务器上创建一个 GIT 用户，用来运行 GIT 服务<pre><code class="shell">adduser git #加入git用户
+passwd git  #配置你的密码
+chmod 740 /etc/sudoers #修改权限 r=4 w=2 x=1 rwx=7 r__=4 ___=0,也就是说git的sudo使用权为只读
+vi /etc/sudoers</code></pre>
+打开suduers，找到以下内容<pre><code class="ini">## Allow root to run any commands anywhere
+root    ALL=(ALL)       ALL</code></pre>
+在他的下面加入以下内容</li>
+<li>创建.ssh目录，保存公钥文件<ul>
+<li>切换到git用户：<code>su git</code></li>
+<li>创建.ssh目录：<code>mkdir .ssh &amp;&amp; chmod 700 .ssh</code></li>
+<li>从本地上传公钥文件<br>  ```shell<br>  scp 生成的公钥.pub root@ServerIp:/home/git/.shh/authorized_keys<br>  chmod 600 .ssh/authorized_keys</li>
+<li>在本地测试git连接<pre><code class="shell">  ssh -v git@SERVER_IP</code></pre>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>创建网站的根目录</p>
+<blockquote>
+<p>创建网站的根目录的目的是为了让nginx托管这些静态文件。</p>
+</blockquote>
+<pre><code class="shell">  su root
+  mkdir /data/hexoBlog                # 此目录为网站的根目录
+  chown git:git -R /data/hexoBlog     # 变更该目录的所有者</code></pre>
+</li>
+<li><p>安装以及配置Nginx</p>
+<ul>
+<li><p>安装过程略，具体可百度。编译好nginx后，进入其配置文件</p>
+<pre><code class="shell">vim conf/nginx.conf</code></pre>
+</li>
+<li><p>在http端下配置你的虚拟主机</p>
+<pre><code class="ini">server{
+     listen       8081;           #监听8081端口
+     server_name 139.159.245.212; #你的服务器名，通常是域名，如果是域名，你就需要监听80端口
+     root       /home/hexo;       #网站的根目录
+     location / {
+
+     }
+
+#access_log logs/access.log mylog;
+
+error_page 404 /404.html;         #配置40x页面
+    location = /40x.html {
+}
+
+error_page 500 502 503 504 /50x.html; #配置50x页面
+    location = /50x.html {
+}
+
+}</code></pre>
+</li>
+</ul>
+</li>
+<li><p>创建git仓库</p>
+<pre><code class="shell">mkdir /data/repo
+cd /data/repo
+git init --bare hexoBlog.git</code></pre>
+</li>
+<li><p>配置 GIT HOOKS</p>
+<pre><code class="shell">  $ vim /var/repo/blog.git/hooks/post-receive
+  #!/bin/sh
+  git --work-tree=/data/wwwroot/hexo --git-dir=/data/repo/hexoBlog.git checkout -f</code></pre>
+<p>  保存退出，并设置权限</p>
+<pre><code class="shell">  chmod +x /data/repo/hexoBlog.git/hooks/post-receive</code></pre>
+</li>
+<li><p>禁用GIT用户的SHELL 登录权限配置</p>
+<ul>
+<li>首先你必须确保 <code>git-shell</code> 已存在于 <code>/etc/shells</code> 文件中<ul>
+<li>使用命令<code>which git-shell</code>判断系统是否安装了<code>git-shell</code>。如果已经安装，则返回git-shell的安装目录，如：<code>/usr/bin/git-shell</code>；如果未安装则需要安装git-shell命令，安装命令：<code>yum install git</code></li>
+<li>判断<code>shells</code>文件是否存在，判断命令：<code>cat /etc/shells</code></li>
+<li>如果文件不存在或没有/usr/bin/git-shell，则需要使用vim增加这个路径：<code>sudo vim /etc/shells</code>，在最后一行添加git-shell路径：<pre><code class="shell">  # /etc/shells: valid login shells </code></pre>
+</li>
+<li>现在你可以使用 chsh 命令修改任一系统用户的shell权限了,现在我们修改第一步中创建的git用户的登录权限，禁止git用户使用shell权限：终端中输入<code>sudo chsh git</code>，然后在Login Shell [/bin/bash]: 后输入<code>git-shell</code>路径<code>/usr/bin/git-shell</code></li>
+<li>修改完成后验证： <code>vim /etc/passwd</code>找到类似<code>git:x:1000:1000:,,,:/home/git:/usr/bin/git-shell</code>，看看<code>git</code>用户是否是以<code>git-shell</code>结尾</li>
+</ul>
+</li>
+<li>这样，<code>git</code>用户就只能使用<code>SSH</code>连接对<code>Git</code>仓库进行推送和拉取操作，而不能登录机器并取得普通<code>shell</code>命令<h2 id="三、hexo配置"><a href="#三、hexo配置" class="headerlink" title="三、hexo配置"></a>三、hexo配置</h2>打开hexo博客目录，编辑_config.yml文件，修改repository为<pre><code class="yml">deploy:
+type: git
+repository: git@ip或域名:/var/repo/blog.git
+branch: master</code></pre>
+</li>
+</ul>
+</li>
+</ul>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="true">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+                <ul id="audio-list" style="display:none">
+                    
+                        
+                            <li title='0' data-url='/statics/chengdu.mp3'></li>
+                        
+                    
+                </ul>
+            
+            
+                
+    <div id='gitalk-container' class="comment link"
+        data-ae='true'
+        data-ci='ec894e2b66f752e8b7fb'
+        data-cs='3ccc2e92bb350688fe2c2dc2930189b62622bfb1'
+        data-r='blog-comments'
+        data-o='TriDiamond'
+        data-a='TriDiamond'
+        data-d=''
+    >留言</div>
+
+
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="https://res.cloudinary.com/tridiamond/image/upload/v1573019751/TriDiamond_logo_ui_xeublz.jpg" height=300 width=300></img>
+                    <p>Gadfly</p>
+                    <span>Think like an artist, develop like an artisan</span>
+                    <dl>
+                        <dd><a href="https://github.com/TriDiamond" target="_blank"><span class=" iconfont icon-github"></span></a></dd>
+                        <dd><a href="https://twitter.com/TriDiamond6" target="_blank"><span class=" iconfont icon-twitter"></span></a></dd>
+                        <dd><a href="https://stackoverflow.com/users/7602324/tridiamond?tab=profile" target="_blank"><span class=" iconfont icon-stack-overflow"></span></a></dd>
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">23 <p>文章</p></a></li>
+                    <li><a href="/categories">17 <p>分类</p></a></li>
+                    <li><a href="/tags">28 <p>标签</p></a></li>
+                </ul>
+            </div>
+            
+                
+                
+                    <div class="box sticky animated fadeInRight faster">
+                        <div id="toc" class="subbox">
+                            <h4>目录</h4>
+                            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#一、前言"><span class="toc-number">1.</span> <span class="toc-text">一、前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二、环境安装"><span class="toc-number">2.</span> <span class="toc-text">二、环境安装</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-本地环境安装（MAC）"><span class="toc-number">2.1.</span> <span class="toc-text">1. 本地环境安装（MAC）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-云端服务器环境安装"><span class="toc-number">2.2.</span> <span class="toc-text">2. 云端服务器环境安装</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#三、hexo配置"><span class="toc-number">3.</span> <span class="toc-text">三、hexo配置</span></a></li></ol>
+                        </div>
+                    </div>
+                
+            
+        </div>
+    </div>
+</div>
+
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2019
+        <span class="gradient-text">
+            Gadfly
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.0" target="_blank" rel="noopener">v1.4.0</a></small>
+    </p>
+</footer>
+
+    <link rel="stylesheet" href="//cdn.bootcss.com/gitalk/1.5.0/gitalk.min.css">
+    <script src="//cdn.bootcss.com/gitalk/1.5.0/gitalk.min.js"></script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+
+    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+
+    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+
+    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+
+    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+
+    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+
+    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
+
+    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+
+    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+
+    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/java/java.min.js"></script>
+
+    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/sql/sql.min.js"></script>
+
+
+
+    <script src="/js/busuanzi.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            if ($('span[id^="busuanzi_"]').length) {
+                initialBusuanzi();
+            }
+        });
+    </script>
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-149874671-1');
+    </script>
+
+
+
+
+
+<script>
+    function initialTyped () {
+        var typedTextEl = $('.typed-text');
+        if (typedTextEl && typedTextEl.length > 0) {
+            var typed = new Typed('.typed-text', {
+                strings: ["Think like an artist, develop like an artisan", "用艺术家思维去思考问题，用工匠创造精神去开发", "Then am I A happy fly, If I live Or if I die.", "不管我活着，还是我死去，我都是一只快乐的飞来飞去的牛虻"],
+                typeSpeed: 90,
+                loop: true,
+                loopCount: Infinity,
+                backSpeed: 20,
+            });
+        }
+    }
+
+    if ($('.article-header') && $('.article-header').length) {
+        $(document).ready(function () {
+            initialTyped();
+        });
+    }
+</script>
+
+
+</html>
