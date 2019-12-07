@@ -1,457 +1,155 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><title>在阿里云中搭建Hexo博客 | 牛虻的世界</title><meta name="description" content="在阿里云中搭建Hexo博客"><meta name="keywords" content="Hexo,Markdown,阿里云"><meta name="author" content="Gadfly"><meta name="copyright" content="Gadfly"><meta name="format-detection" content="telephone=no"><link rel="shortcut icon" href="/img/favicon.ico"><link rel="preconnect" href="//cdn.jsdelivr.net"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="在阿里云中搭建Hexo博客"><meta name="twitter:description" content="在阿里云中搭建Hexo博客"><meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg.png"><meta property="og:type" content="article"><meta property="og:title" content="在阿里云中搭建Hexo博客"><meta property="og:url" content="https://blog.gadfly.pub/2019/11/08/zai-a-li-yun-zhong-da-jian-hexo-bo-ke/"><meta property="og:site_name" content="牛虻的世界"><meta property="og:description" content="在阿里云中搭建Hexo博客"><meta property="og:image" content="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg.png"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><script src="https://cdn.jsdelivr.net/npm/js-cookie/dist/js.cookie.min.js"></script><script>const autoChangeMode = 'false'
+var t = Cookies.get("theme");
+if (autoChangeMode == '1'){
+const isDarkMode = window.matchMedia("(prefers-color-scheme: dark)").matches
+const isLightMode = window.matchMedia("(prefers-color-scheme: light)").matches
+const isNotSpecified = window.matchMedia("(prefers-color-scheme: no-preference)").matches
+const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
 
-<!DOCTYPE html>
-<html lang="zh-CN" class="loading">
-<head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>在阿里云中搭建Hexo博客 - 牛虻的世界</title>
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="google" content="notranslate" />
-    <meta name="keywords" content="TriDiamond Obsidian,"> 
-    <meta name="description" content="一、前言&amp;emsp;&amp;emsp;由于不想部署在github上，因为Github的访问速度在国内比较慢，所以有了此文。&amp;emsp;&amp;emsp;部署之前先了解一下hexo利于git更新的流程，部署在Gi,"> 
-    <meta name="author" content="Gadfly"> 
-    <link rel="alternative" href="atom.xml" title="牛虻的世界" type="application/atom+xml"> 
-    <link rel="icon" href="/img/favicon.png"> 
-    <link href="https://fonts.loli.net/css?family=Roboto+Mono|Rubik&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_xjbfxy4nzcj.css">
-    <link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
-    <link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
-    <link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
-    <link rel="stylesheet" href="/css/obsidian.css">
-    <link rel="stylesheet" href="/css/ball-atom.min.css">
-</head>
+if (t === undefined){
+  if (isLightMode) activateLightMode()
+  else if (isDarkMode) activateDarkMode()
+  else if (isNotSpecified || hasNoSupport){
+    console.log('You specified no preference for a color scheme or your browser does not support it. I Schedule dark mode during night time.')
+    now = new Date();
+    hour = now.getHours();
+    isNight = hour < 6 || hour >= 18
+    isNight ? activateDarkMode() : activateLightMode()
+}
+} else if (t == 'light') activateLightMode()
+else activateDarkMode()
 
-<body class="loading">
-    <div class="loader">
-        <div class="la-ball-atom la-2x">
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-        </div>
-    </div>
-    <span id="config-title" style="display:none">牛虻的世界</span>
-    <div id="loader"></div>
-    <div id="single">
-    <div class="scrollbar gradient-bg-rev"></div>
-<div id="top" style="display: block;">
-    <div class="bar" style="width: 0;"></div>
-    <div class="navigation animated fadeIn fast delay-1s">
-        <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="http://blog.gadfly.pub">
-        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
-        <h3 class="subtitle">在阿里云中搭建Hexo博客</h3>
-        <div class="social">
-            <!--        <div class="like-icon">-->
-            <!--            <a href="javascript:;" target="_blank" rel="noopener" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
-            <!--        </div>-->
-            <div>
-                <div class="share">
-                    
-                        <a href="javascript:;" target="_blank" rel="noopener" class="iconfont icon-share1"></a>
-                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
-                    
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 
-    <div class="section">
-        <div class= article-header-wrapper>
-    <div class="article-header">
-        <div class="article-cover animated fadeIn" style="
-            animation-delay: 600ms;
-            animation-duration: 1.2s;
-            background-image: 
-                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
-                url(/img/gadfly.jpg);">
-        </div>
-        <div class="else">
-            <p class="animated fadeInDown">
-                
-                    <a href="/categories/云服务器"><b>「 </b>云服务器<b> 」</b></a>
-                
-                十一月 08, 2019
-            </p>
-            <h3 class="post-title animated fadeInDown"><a href="/2019/11/08/zai-a-li-yun-zhong-da-jian-hexo-bo-ke/" title="在阿里云中搭建Hexo博客" class="">在阿里云中搭建Hexo博客</a></h3>
-            
-                <p class="post-count animated fadeInDown">
-                    
-                        <span>
-                        <b class="iconfont icon-text2"></b> <i>文章字数</i>
-                        4.7k
-                    </span>
-                    
-                    
-                        <span>
-                        <b class="iconfont icon-timer__s"></b> <i>阅读约需</i>
-                        4 mins.
-                    </span>
-                    
-                    
-                    
-                        <span id="busuanzi_container_page_pv">
-                            <b class="iconfont icon-read"></b> <i>阅读次数</i>
-                            <span id="busuanzi_value_page_pv">0</span>
-                        </span>
-                    
-                </p>
-            
-            
-                <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/Hexo/" rel="tag">Hexo</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/Markdown/" rel="tag">Markdown</a></li><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/%E9%98%BF%E9%87%8C%E4%BA%91/" rel="tag">阿里云</a></li></ul>
-            
-        </div>
-    </div>
-</div>
+} else if (autoChangeMode == '2'){
+  now = new Date();
+  hour = now.getHours();
+  isNight = hour < 6 || hour >= 18
+  if(t === undefined) isNight? activateDarkMode() : activateLightMode()
+  else if (t === 'light') activateLightMode()
+  else activateDarkMode() 
+} else {
+  if ( t == 'dark' ) activateDarkMode()
+  else if ( t == 'light') activateLightMode()
+}
 
-<div class="screen-gradient-after">
-    <div class="screen-gradient-content">
-        <div class="screen-gradient-content-inside">
-            <div class="bold-underline-links screen-gradient-sponsor">
-                <p>
-                    <span class="animated fadeIn delay-1s"></span>
-                </p>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class='main'>
-        <div class="content markdown animated fadeIn slower">
-            <h2 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h2><p>&emsp;&emsp;由于不想部署在github上，因为Github的访问速度在国内比较慢，所以有了此文。<br>&emsp;&emsp;部署之前先了解一下hexo利于git更新的流程，部署在Github上和部署在云服务器上没有特别大的本质区别。<br>&emsp;&emsp;整个流程就是本地将 *.md 渲染成静态文件，然后Git推送到服务器的repository,服务器再通过 git-hooks 同步网站根目录。再利于nginx托管这些静态资源，就可以实现快速的访问。</p>
-<h2 id="二、环境安装"><a href="#二、环境安装" class="headerlink" title="二、环境安装"></a>二、环境安装</h2><h3 id="1-本地环境安装（MAC）"><a href="#1-本地环境安装（MAC）" class="headerlink" title="1. 本地环境安装（MAC）"></a>1. 本地环境安装（MAC）</h3><ul>
-<li><p><code>brew</code> 安装</p>
-<pre><code class="shell">  /usr/bin/ruby -e &quot;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)&quot;</code></pre>
+function activateDarkMode(){
+  document.documentElement.setAttribute('data-theme', 'dark')
+  if (document.querySelector('meta[name="theme-color"]') !== null){
+    document.querySelector('meta[name="theme-color"]').setAttribute('content','#000')
+  }
+}
+function activateLightMode(){
+  document.documentElement.setAttribute('data-theme', 'light')
+  if (document.querySelector('meta[name="theme-color"]') !== null){
+  document.querySelector('meta[name="theme-color"]').setAttribute('content','#fff')
+  }
+}</script><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@latest/css/font-awesome.min.css"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar@0.1.15/dist/snackbar.min.css"><link rel="canonical" href="https://blog.gadfly.pub/2019/11/08/zai-a-li-yun-zhong-da-jian-hexo-bo-ke/"><link rel="prev" title="Hexo相关配置和使用" href="https://blog.gadfly.pub/2019/11/09/hexo-xiang-guan-pei-zhi-he-shi-yong/"><link rel="next" title="Hello World" href="https://blog.gadfly.pub/2016/03/30/hello-world/"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Titillium+Web"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容:${query}"}},
+  translate: {"defaultEncoding":2,"translateDelay":0,"cookieDomain":"https://xxx/","msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"简"},
+  highlight_copy: 'true',
+  highlight_lang: 'true',
+  highlight_shrink: 'false',
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  bookmark: {
+    title: 'Snackbar.bookmark.title',
+    message_prev: '按',
+    message_next: '键将本页加入书签'
+  },
+  runtime_unit: '天',
+  copyright: undefined,
+  copy_copyright_js: false,
+  ClickShowText: undefined,
+  medium_zoom: 'true',
+  Snackbar: {"bookmark":{"title":"Snackbar.bookmark.title","message_prev":"按","message_next":"键将本页加入书签"},"chs_to_cht":"你已切换为繁体","cht_to_chs":"你已切换为简体","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#49b1f5","bgDark":"#2d3035","position":"bottom-left"}
+  
+}</script></head><body><div id="header"> <div id="page-header"><span class="pull_left" id="blog_name"><a class="blog_title" id="site-name" href="/">牛虻的世界</a></span><i class="fa fa-bars fa-fw toggle-menu pull_right close" aria-hidden="true"></i><span class="pull_right menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 文章归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 文章标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fa fa-folder-open"></i><span> 文章分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fa fa-link"></i><span> 友情链接</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-heart"></i><span> 关于我</span></a></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> List</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/music/"><i class="fa-fw fa fa-music"></i><span> Music</span></a></li><li><a class="site-page" href="/movies/"><i class="fa-fw fa fa-film"></i><span> Movie</span></a></li></ul></div></div></span><span class="pull_right" id="search_button"><a class="site-page social-icon search"><i class="fa fa-search fa-fw"></i><span> 搜索</span></a></span></div></div><div id="mobile-sidebar"><div id="menu_mask"></div><div id="mobile-sidebar-menus"><div class="mobile_author_icon"><img class="lazyload avatar_img" src="https://api.btstu.cn/sjtx/api.php?lx=c3&amp;format=images" onerror="onerror=null;src='/img/friend_404.gif'"></div><div class="mobile_post_data"><div class="mobile_data_item is_center"><div class="mobile_data_link"><a href="/archives/"><div class="headline">文章</div><div class="length_num">23</div></a></div></div><div class="mobile_data_item is_center">      <div class="mobile_data_link"><a href="/tags/"><div class="headline">标签</div><div class="length_num">28</div></a></div></div><div class="mobile_data_item is_center">     <div class="mobile_data_link"><a href="/categories/"><div class="headline">分类</div><div class="length_num">17</div></a></div></div></div><hr><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 文章归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 文章标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fa fa-folder-open"></i><span> 文章分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fa fa-link"></i><span> 友情链接</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-heart"></i><span> 关于我</span></a></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> List</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/music/"><i class="fa-fw fa fa-music"></i><span> Music</span></a></li><li><a class="site-page" href="/movies/"><i class="fa-fw fa fa-film"></i><span> Movie</span></a></li></ul></div></div></div><div id="mobile-sidebar-toc"><div class="toc_mobile_headline">目录</div><ol class="toc_mobile_items"><li class="toc_mobile_items-item toc_mobile_items-level-1"><a class="toc_mobile_items-link" href="#一-前言"><span class="toc_mobile_items-number">1.</span> <span class="toc_mobile_items-text"> 一、前言</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-1"><a class="toc_mobile_items-link" href="#二-环境安装"><span class="toc_mobile_items-number">2.</span> <span class="toc_mobile_items-text"> 二、环境安装</span></a><ol class="toc_mobile_items-child"><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#本地环境安装mac"><span class="toc_mobile_items-number">2.1.</span> <span class="toc_mobile_items-text"> 本地环境安装（MAC）</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#服务器部分"><span class="toc_mobile_items-number">2.2.</span> <span class="toc_mobile_items-text"> 服务器部分</span></a><ol class="toc_mobile_items-child"><li class="toc_mobile_items-item toc_mobile_items-level-3"><a class="toc_mobile_items-link" href="#新建项目"><span class="toc_mobile_items-number">2.2.1.</span> <span class="toc_mobile_items-text"> 新建项目</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-3"><a class="toc_mobile_items-link" href="#添加用户"><span class="toc_mobile_items-number">2.2.2.</span> <span class="toc_mobile_items-text"> 添加用户</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-3"><a class="toc_mobile_items-link" href="#创建本地git仓库"><span class="toc_mobile_items-number">2.2.3.</span> <span class="toc_mobile_items-text"> 创建本地GIT仓库</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-3"><a class="toc_mobile_items-link" href="#配置-git-hooks"><span class="toc_mobile_items-number">2.2.4.</span> <span class="toc_mobile_items-text"> 配置 GIT HOOKS</span></a></li></ol></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#本地部分"><span class="toc_mobile_items-number">2.3.</span> <span class="toc_mobile_items-text"> 本地部分</span></a><ol class="toc_mobile_items-child"><li class="toc_mobile_items-item toc_mobile_items-level-3"><a class="toc_mobile_items-link" href="#安装-hexo"><span class="toc_mobile_items-number">2.3.1.</span> <span class="toc_mobile_items-text"> 安装 Hexo</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-3"><a class="toc_mobile_items-link" href="#初始化-hexo-博客"><span class="toc_mobile_items-number">2.3.2.</span> <span class="toc_mobile_items-text"> 初始化 Hexo 博客</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-3"><a class="toc_mobile_items-link" href="#创建密钥设置免密git连接"><span class="toc_mobile_items-number">2.3.3.</span> <span class="toc_mobile_items-text"> 创建密钥，设置免密git连接</span></a></li></ol></li></ol></li><li class="toc_mobile_items-item toc_mobile_items-level-1"><a class="toc_mobile_items-link" href="#配置-hexo"><span class="toc_mobile_items-number">3.</span> <span class="toc_mobile_items-text"> 配置 Hexo</span></a><ol class="toc_mobile_items-child"><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#创建-createhexopostjs-文件"><span class="toc_mobile_items-number">3.1.</span> <span class="toc_mobile_items-text"> 创建 createHexoPost.js 文件</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#创建-generateanddeployjs-文件"><span class="toc_mobile_items-number">3.2.</span> <span class="toc_mobile_items-text"> 创建 generateAndDeploy.js 文件</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#创建-scriptseventlistenerjs-文件"><span class="toc_mobile_items-number">3.3.</span> <span class="toc_mobile_items-text"> 创建 scripts\eventListener.js 文件</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#在-packagejson-中修改配置"><span class="toc_mobile_items-number">3.4.</span> <span class="toc_mobile_items-text"> 在 package.json 中修改配置</span></a></li></ol></li></ol></div></div><div id="body-wrap"><div id="web_bg" data-type="photo"></div><i class="fa fa-arrow-right" id="toggle-sidebar" aria-hidden="true">     </i><div class="auto_open" id="sidebar"><div class="sidebar-toc"><div class="sidebar-toc__title">目录</div><div class="sidebar-toc__progress"><span class="progress-notice">你已经读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar">     </div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#一-前言"><span class="toc-number">1.</span> <span class="toc-text"> 一、前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#二-环境安装"><span class="toc-number">2.</span> <span class="toc-text"> 二、环境安装</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#本地环境安装mac"><span class="toc-number">2.1.</span> <span class="toc-text"> 本地环境安装（MAC）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#服务器部分"><span class="toc-number">2.2.</span> <span class="toc-text"> 服务器部分</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#新建项目"><span class="toc-number">2.2.1.</span> <span class="toc-text"> 新建项目</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#添加用户"><span class="toc-number">2.2.2.</span> <span class="toc-text"> 添加用户</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#创建本地git仓库"><span class="toc-number">2.2.3.</span> <span class="toc-text"> 创建本地GIT仓库</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#配置-git-hooks"><span class="toc-number">2.2.4.</span> <span class="toc-text"> 配置 GIT HOOKS</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#本地部分"><span class="toc-number">2.3.</span> <span class="toc-text"> 本地部分</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#安装-hexo"><span class="toc-number">2.3.1.</span> <span class="toc-text"> 安装 Hexo</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#初始化-hexo-博客"><span class="toc-number">2.3.2.</span> <span class="toc-text"> 初始化 Hexo 博客</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#创建密钥设置免密git连接"><span class="toc-number">2.3.3.</span> <span class="toc-text"> 创建密钥，设置免密git连接</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#配置-hexo"><span class="toc-number">3.</span> <span class="toc-text"> 配置 Hexo</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#创建-createhexopostjs-文件"><span class="toc-number">3.1.</span> <span class="toc-text"> 创建 createHexoPost.js 文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#创建-generateanddeployjs-文件"><span class="toc-number">3.2.</span> <span class="toc-text"> 创建 generateAndDeploy.js 文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#创建-scriptseventlistenerjs-文件"><span class="toc-number">3.3.</span> <span class="toc-text"> 创建 scripts\eventListener.js 文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#在-packagejson-中修改配置"><span class="toc-number">3.4.</span> <span class="toc-text"> 在 package.json 中修改配置</span></a></li></ol></li></ol></div></div></div><div id="content-outer"><div id="top-container" style="background-image: url(https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg.png)"><div id="post-info"><div id="post-title"><div class="posttitle">在阿里云中搭建Hexo博客</div></div><div id="post-meta"><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 发表于 2019-11-08<span class="post-meta__separator">|</span><i class="fa fa-history" aria-hidden="true"></i> 更新于 2019-12-07</time><span class="post-meta__separator mobile_hidden">|</span><span class="mobile_hidden"><i class="fa fa-inbox post-meta__icon" aria-hidden="true"></i><a class="post-meta__categories" href="/categories/%E4%BA%91%E6%9C%8D%E5%8A%A1%E5%99%A8/">云服务器</a><i class="fa fa-angle-right" aria-hidden="true"></i><i class="fa fa-inbox post-meta__icon" aria-hidden="true"></i><a class="post-meta__categories" href="/categories/%E4%BA%91%E6%9C%8D%E5%8A%A1%E5%99%A8/Hexo/">Hexo</a></span><div class="post-meta-wordcount"><i class="fa fa-file-word-o post-meta__icon" aria-hidden="true"></i><span>字数总计: </span><span class="word-count">1.6k</span><span class="post-meta__separator">|</span><i class="fa fa-clock-o post-meta__icon" aria-hidden="true"></i><span>阅读时长: 7 分钟</span><span class="post-meta__separator">|</span><i class="fa fa-eye post-meta__icon" aria-hidden="true">       </i><span>阅读量: </span><span id="busuanzi_value_page_pv"></span></div></div></div></div><div class="layout layout_post" id="content-inner">   <article id="post"><div class="article-container" id="post-content"><h1 id="一-前言"><a class="markdownIt-Anchor" href="#一-前言"></a> 一、前言</h1>
+<p>  由于不想部署在github上，因为Github的访问速度在国内比较慢，所以有了此文。<br />
+  部署之前先了解一下hexo利于git更新的流程，部署在Github上和部署在云服务器上没有特别大的本质区别。<br />
+  整个流程就是本地将 *.md 渲染成静态文件，然后Git推送到服务器的repository,服务器再通过 git-hooks 同步网站根目录。再利于nginx托管这些静态资源，就可以实现快速的访问。</p>
+<h1 id="二-环境安装"><a class="markdownIt-Anchor" href="#二-环境安装"></a> 二、环境安装</h1>
+<ul>
+<li>
+<h2 id="本地环境安装mac"><a class="markdownIt-Anchor" href="#本地环境安装mac"></a> 本地环境安装（MAC）</h2>
 </li>
-<li><p><code>node.js</code> 安装</p>
-<pre><code class="shell">  brew install nodejs
-  npm install -g cnpm --registry=https://registry.npm.taobao.org</code></pre>
+<li>
+<p><code>brew</code> 安装</p>
+  <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"</span><br></pre></td></tr></table></figure>
 </li>
-<li><p><code>git</code> 安装</p>
+<li>
+<p><code>node.js</code> 安装</p>
+  <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">brew install nodejs</span><br><span class="line">npm install -g cnpm --registry=https://registry.npm.taobao.org</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p><code>git</code> 安装</p>
 <blockquote>
 <p>系统已经自带，不用单独安装。</p>
 </blockquote>
 </li>
-<li><p><code>hexo</code> 安装</p>
-<pre><code class="shell">  npm install hexo-cli hexo-server -g</code></pre>
+<li>
+<p><code>hexo</code> 安装</p>
+  <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">npm install hexo-cli hexo-server -g</span><br></pre></td></tr></table></figure>
 </li>
-<li><p>安装 <code>vs code</code></p>
+<li>
+<p>安装 <code>vs code</code></p>
 </li>
-<li><p>使用git bash生成ssh</p>
-<pre><code class="shell">  ssh-keygen -t rsa</code></pre>
-<p>  在本地服务器中配置好了公钥，接下来我们需要把这个公钥交给服务器，相当于本地机器有了一把能访问服务器的“钥匙”，所以接下来需要配置服务器。</p>
-<h3 id="2-云端服务器环境安装"><a href="#2-云端服务器环境安装" class="headerlink" title="2. 云端服务器环境安装"></a>2. 云端服务器环境安装</h3></li>
-<li><p><code>git</code> 安装</p>
-<ul>
-<li>在云服务器上创建一个 GIT 用户，用来运行 GIT 服务<pre><code class="shell">adduser git #加入git用户
-passwd git  #配置你的密码
-chmod 740 /etc/sudoers #修改权限 r=4 w=2 x=1 rwx=7 r__=4 ___=0,也就是说git的sudo使用权为只读
-vi /etc/sudoers</code></pre>
-打开suduers，找到以下内容<pre><code class="ini">## Allow root to run any commands anywhere
-root    ALL=(ALL)       ALL</code></pre>
-在他的下面加入以下内容</li>
-<li>创建.ssh目录，保存公钥文件<ul>
-<li>切换到git用户：<code>su git</code></li>
-<li>创建.ssh目录：<code>mkdir .ssh &amp;&amp; chmod 700 .ssh</code></li>
-<li>从本地上传公钥文件<br>  ```shell<br>  scp 生成的公钥.pub root@ServerIp:/home/git/.shh/authorized_keys<br>  chmod 600 .ssh/authorized_keys</li>
-<li>在本地测试git连接<pre><code class="shell">  ssh -v git@SERVER_IP</code></pre>
+<li>
+<p>使用git bash生成ssh</p>
+  <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">ssh-keygen -t rsa -C "gadflybsd@gmail.com" -f ~/.ssh/gadfly_pub_authorized_rsa</span><br></pre></td></tr></table></figure>
+<p>在本地服务器中配置好了公钥，接下来我们需要把这个公钥交给服务器，相当于本地机器有了一把能访问服务器的“钥匙”，所以接下来需要配置服务器。</p>
+</li>
+<li>
+<h2 id="服务器部分"><a class="markdownIt-Anchor" href="#服务器部分"></a> 服务器部分</h2>
+<h3 id="新建项目"><a class="markdownIt-Anchor" href="#新建项目"></a> 新建项目</h3>
+  <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> mkdir /data/repo/lcy.gadfly.pub.git</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> git init --bare /data/repo/lcy.gadfly.pub.git</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> Initialized empty Git repository <span class="keyword">in</span> /data/repo/lcy.gadfly.pub.git</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> /root/oneinstack/vhost.sh <span class="comment"># 创建lcy.gadfly.pub虚拟站点</span></span></span><br></pre></td></tr></table></figure>
+<h3 id="添加用户"><a class="markdownIt-Anchor" href="#添加用户"></a> 添加用户</h3>
+  <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> useradd GadflyLCY</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> passwd GadflyLCY</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> usermod -G git GadflyLCY  <span class="comment">#将用户添加到git用户组</span></span></span><br><span class="line"><span class="meta">$</span><span class="bash"> cat /etc/group <span class="comment"># 查看用户组及用户是否成功配置</span></span></span><br><span class="line"><span class="meta">$</span><span class="bash"> chown -R GadflyLCY:git /data/repo/lcy.gadfly.pub.git</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> chown -R GadflyLCY:git /data/wwwroot/lcy.gadfly.pub</span></span><br></pre></td></tr></table></figure>
+<h3 id="创建本地git仓库"><a class="markdownIt-Anchor" href="#创建本地git仓库"></a> 创建本地<code>GIT</code>仓库</h3>
+  <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> mkdir /data/repo</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">cd</span> /data/repo</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> git init --bare lcy.gadfly.pub.git</span></span><br></pre></td></tr></table></figure>
+<h3 id="配置-git-hooks"><a class="markdownIt-Anchor" href="#配置-git-hooks"></a> 配置 GIT HOOKS</h3>
+  <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> vi /data/repo/lcy.gadfly.pub.git/hooks/post-receive</span></span><br><span class="line"><span class="meta">#</span><span class="bash">!/bin/sh</span></span><br><span class="line">git --work-tree=/data/wwwroot/lcy.gadfly.pub --git-dir=/data/repo/lcy.gadfly.pub.git checkout -f</span><br><span class="line"><span class="meta">$</span><span class="bash"> chmod +x /data/repo/lcy.gadfly.pub.git/hooks/post-receive</span></span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<h2 id="本地部分"><a class="markdownIt-Anchor" href="#本地部分"></a> 本地部分</h2>
+<h3 id="安装-hexo"><a class="markdownIt-Anchor" href="#安装-hexo"></a> 安装 <code>Hexo</code></h3>
+  <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">npm install -g hexo-cli</span><br><span class="line">npm install -g shelljs</span><br><span class="line">npm install -g readline-sync</span><br><span class="line">npm install -g lunar-calendar</span><br></pre></td></tr></table></figure>
+<h3 id="初始化-hexo-博客"><a class="markdownIt-Anchor" href="#初始化-hexo-博客"></a> 初始化 <code>Hexo</code> 博客</h3>
+  <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">hexo init lcy.gadfly.pub</span><br><span class="line">cd lcy.gadfly.pub</span><br><span class="line">npm i hexo-permalink-pinyin --save</span><br><span class="line">git clone -b master https://github.com/jerryc127/hexo-theme-butterfly.git themes/Butterfly</span><br><span class="line">npm install hexo-renderer-pug hexo-renderer-stylus --save</span><br><span class="line">npm install hexo-wordcount --save</span><br><span class="line">npm uninstall hexo-generator-index --save</span><br><span class="line">npm install hexo-generator-index-pin-top --save</span><br><span class="line">npm install --save hexo-tag-aplayer</span><br><span class="line">npm install hexo-douban --save</span><br><span class="line">npm install hexo-tag-youku --save</span><br><span class="line">npm install --save hexo-filter-plantuml</span><br><span class="line">npm install --save hexo-tag-qrcode</span><br><span class="line">npm un hexo-renderer-marked --save</span><br><span class="line">npm un hexo-renderer-kramed --save</span><br><span class="line">npm un hexo-math --save</span><br><span class="line">npm i @upupming/hexo-renderer-markdown-it-plus --save</span><br><span class="line">npm install hexo-tag-echarts3 --save</span><br><span class="line">npm install --save hexo-blog-encrypt</span><br><span class="line">npm install --save hexo-lunar-calendar</span><br><span class="line">npm install hexo-tag-youku --save</span><br><span class="line">npm install --save hexo-tag-bilibili</span><br><span class="line">npm install --save hexo-filter-flowchart</span><br><span class="line">npm install --save hexo-filter-sequence</span><br><span class="line">npm install hexo-generator-search --save</span><br><span class="line">npm install --save hexo-pdf</span><br><span class="line">hexo new page about</span><br><span class="line">hexo new page tags</span><br><span class="line">hexo new page categories</span><br><span class="line">hexo new page link</span><br><span class="line">hexo new page music</span><br><span class="line">hexo new page gallery</span><br></pre></td></tr></table></figure>
+<h3 id="创建密钥设置免密git连接"><a class="markdownIt-Anchor" href="#创建密钥设置免密git连接"></a> 创建密钥，设置免密git连接</h3>
+  <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> ssh-keygen -t rsa -C <span class="string">"GadflyLcy@gmail.com"</span> -f ~/.ssh/GadflyLCY-GitHub</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> ssh-copy-id -i GadflyLCY-GitHub.pub GadflyLCY@gadfly.pub</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> ssh -v GadflyLCY@gadfly.pub</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> Hi GadflyLCY! You<span class="string">'ve successfully authenticated, but GitHub does not provide shell access.</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 如果不通，进行以下这两步操作。</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> ssh-agent -s</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> ssh-add ~/.ssh/GadflyLCY-GitHub</span></span><br></pre></td></tr></table></figure>
 </li>
 </ul>
-</li>
-</ul>
-</li>
-<li><p>创建网站的根目录</p>
+<h1 id="配置-hexo"><a class="markdownIt-Anchor" href="#配置-hexo"></a> 配置 <code>Hexo</code></h1>
+<h2 id="创建-createhexopostjs-文件"><a class="markdownIt-Anchor" href="#创建-createhexopostjs-文件"></a> 创建 <code>createHexoPost.js</code> 文件</h2>
 <blockquote>
-<p>创建网站的根目录的目的是为了让nginx托管这些静态文件。</p>
+<p>选择新建博客的分类、拉取GIT仓库</p>
 </blockquote>
-<pre><code class="shell">  su root
-  mkdir /data/hexoBlog                # 此目录为网站的根目录
-  chown git:git -R /data/hexoBlog     # 变更该目录的所有者</code></pre>
-</li>
-<li><p>安装以及配置Nginx</p>
-<ul>
-<li><p>安装过程略，具体可百度。编译好nginx后，进入其配置文件</p>
-<pre><code class="shell">vim conf/nginx.conf</code></pre>
-</li>
-<li><p>在http端下配置你的虚拟主机</p>
-<pre><code class="ini">server{
-     listen       8081;           #监听8081端口
-     server_name 139.159.245.212; #你的服务器名，通常是域名，如果是域名，你就需要监听80端口
-     root       /home/hexo;       #网站的根目录
-     location / {
-
-     }
-
-#access_log logs/access.log mylog;
-
-error_page 404 /404.html;         #配置40x页面
-    location = /40x.html {
-}
-
-error_page 500 502 503 504 /50x.html; #配置50x页面
-    location = /50x.html {
-}
-
-}</code></pre>
-</li>
-</ul>
-</li>
-<li><p>创建git仓库</p>
-<pre><code class="shell">mkdir /data/repo
-cd /data/repo
-git init --bare hexoBlog.git</code></pre>
-</li>
-<li><p>配置 GIT HOOKS</p>
-<pre><code class="shell">  $ vim /var/repo/blog.git/hooks/post-receive
-  #!/bin/sh
-  git --work-tree=/data/wwwroot/hexo --git-dir=/data/repo/hexoBlog.git checkout -f</code></pre>
-<p>  保存退出，并设置权限</p>
-<pre><code class="shell">  chmod +x /data/repo/hexoBlog.git/hooks/post-receive</code></pre>
-</li>
-<li><p>禁用GIT用户的SHELL 登录权限配置</p>
-<ul>
-<li>首先你必须确保 <code>git-shell</code> 已存在于 <code>/etc/shells</code> 文件中<ul>
-<li>使用命令<code>which git-shell</code>判断系统是否安装了<code>git-shell</code>。如果已经安装，则返回git-shell的安装目录，如：<code>/usr/bin/git-shell</code>；如果未安装则需要安装git-shell命令，安装命令：<code>yum install git</code></li>
-<li>判断<code>shells</code>文件是否存在，判断命令：<code>cat /etc/shells</code></li>
-<li>如果文件不存在或没有/usr/bin/git-shell，则需要使用vim增加这个路径：<code>sudo vim /etc/shells</code>，在最后一行添加git-shell路径：<pre><code class="shell">  # /etc/shells: valid login shells </code></pre>
-</li>
-<li>现在你可以使用 chsh 命令修改任一系统用户的shell权限了,现在我们修改第一步中创建的git用户的登录权限，禁止git用户使用shell权限：终端中输入<code>sudo chsh git</code>，然后在Login Shell [/bin/bash]: 后输入<code>git-shell</code>路径<code>/usr/bin/git-shell</code></li>
-<li>修改完成后验证： <code>vim /etc/passwd</code>找到类似<code>git:x:1000:1000:,,,:/home/git:/usr/bin/git-shell</code>，看看<code>git</code>用户是否是以<code>git-shell</code>结尾</li>
-</ul>
-</li>
-<li>这样，<code>git</code>用户就只能使用<code>SSH</code>连接对<code>Git</code>仓库进行推送和拉取操作，而不能登录机器并取得普通<code>shell</code>命令<h2 id="三、hexo配置"><a href="#三、hexo配置" class="headerlink" title="三、hexo配置"></a>三、hexo配置</h2>打开hexo博客目录，编辑_config.yml文件，修改repository为<pre><code class="yml">deploy:
-type: git
-repository: git@ip或域名:/var/repo/blog.git
-branch: master</code></pre>
-</li>
-</ul>
-</li>
-</ul>
-
-            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
-            <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="true">
-                <source type="audio/mpeg" src="">
-            </audio>
-            
-                <ul id="audio-list" style="display:none">
-                    
-                        
-                            <li title='0' data-url='/statics/chengdu.mp3'></li>
-                        
-                    
-                </ul>
-            
-            
-                
-    <div id='gitalk-container' class="comment link"
-        data-ae='true'
-        data-ci='ec894e2b66f752e8b7fb'
-        data-cs='3ccc2e92bb350688fe2c2dc2930189b62622bfb1'
-        data-r='blog-comments'
-        data-o='TriDiamond'
-        data-a='TriDiamond'
-        data-d=''
-    >留言</div>
-
-
-            
-            
-        </div>
-        <div class="sidebar">
-            <div class="box animated fadeInRight">
-                <div class="subbox">
-                    <img src="https://res.cloudinary.com/tridiamond/image/upload/v1573019751/TriDiamond_logo_ui_xeublz.jpg" height=300 width=300></img>
-                    <p>Gadfly</p>
-                    <span>Think like an artist, develop like an artisan</span>
-                    <dl>
-                        <dd><a href="https://github.com/TriDiamond" target="_blank"><span class=" iconfont icon-github"></span></a></dd>
-                        <dd><a href="https://twitter.com/TriDiamond6" target="_blank"><span class=" iconfont icon-twitter"></span></a></dd>
-                        <dd><a href="https://stackoverflow.com/users/7602324/tridiamond?tab=profile" target="_blank"><span class=" iconfont icon-stack-overflow"></span></a></dd>
-                    </dl>
-                </div>
-                <ul>
-                    <li><a href="/">23 <p>文章</p></a></li>
-                    <li><a href="/categories">17 <p>分类</p></a></li>
-                    <li><a href="/tags">28 <p>标签</p></a></li>
-                </ul>
-            </div>
-            
-                
-                
-                    <div class="box sticky animated fadeInRight faster">
-                        <div id="toc" class="subbox">
-                            <h4>目录</h4>
-                            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#一、前言"><span class="toc-number">1.</span> <span class="toc-text">一、前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二、环境安装"><span class="toc-number">2.</span> <span class="toc-text">二、环境安装</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-本地环境安装（MAC）"><span class="toc-number">2.1.</span> <span class="toc-text">1. 本地环境安装（MAC）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-云端服务器环境安装"><span class="toc-number">2.2.</span> <span class="toc-text">2. 云端服务器环境安装</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#三、hexo配置"><span class="toc-number">3.</span> <span class="toc-text">三、hexo配置</span></a></li></ol>
-                        </div>
-                    </div>
-                
-            
-        </div>
-    </div>
-</div>
-
-
-    </div>
-</div>
-    <div id="back-to-top" class="animated fadeIn faster">
-        <div class="flow"></div>
-        <span class="percentage animated fadeIn faster">0%</span>
-        <span class="iconfont icon-top02 animated fadeIn faster"></span>
-    </div>
-</body>
-<footer>
-    <p class="copyright" id="copyright">
-        &copy; 2019
-        <span class="gradient-text">
-            Gadfly
-        </span>.
-        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
-        Theme
-        <span class="gradient-text">
-            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
-        </span>
-        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.0" target="_blank" rel="noopener">v1.4.0</a></small>
-    </p>
-</footer>
-
-    <link rel="stylesheet" href="//cdn.bootcss.com/gitalk/1.5.0/gitalk.min.css">
-    <script src="//cdn.bootcss.com/gitalk/1.5.0/gitalk.min.js"></script>
-
-<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-<script src="/js/plugin.js"></script>
-<script src="/js/obsidian.js"></script>
-<script src="/js/jquery.truncate.js"></script>
-<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
-<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
-
-<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
-
-    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
-
-    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
-
-    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
-
-    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
-
-    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
-
-    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
-
-    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
-
-    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
-
-    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/java/java.min.js"></script>
-
-    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/sql/sql.min.js"></script>
-
-
-
-    <script src="/js/busuanzi.min.js"></script>
-    <script>
-        $(document).ready(function () {
-            if ($('span[id^="busuanzi_"]').length) {
-                initialBusuanzi();
-            }
-        });
-    </script>
-
-
-<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
-<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
-<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
-<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
-
-<!-- Root element of PhotoSwipe. Must have class pswp. -->
-<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
-    <!-- Background of PhotoSwipe. 
-         It's a separate element as animating opacity is faster than rgba(). -->
-    <div class="pswp__bg"></div>
-    <!-- Slides wrapper with overflow:hidden. -->
-    <div class="pswp__scroll-wrap">
-        <!-- Container that holds slides. 
-            PhotoSwipe keeps only 3 of them in the DOM to save memory.
-            Don't modify these 3 pswp__item elements, data is added later on. -->
-        <div class="pswp__container">
-            <div class="pswp__item"></div>
-            <div class="pswp__item"></div>
-            <div class="pswp__item"></div>
-        </div>
-        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
-        <div class="pswp__ui pswp__ui--hidden">
-            <div class="pswp__top-bar">
-                <!--  Controls are self-explanatory. Order can be changed. -->
-                <div class="pswp__counter"></div>
-                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
-                <button class="pswp__button pswp__button--share" title="Share"></button>
-                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
-                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
-                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
-                <!-- element will get class pswp__preloader--active when preloader is running -->
-                <div class="pswp__preloader">
-                    <div class="pswp__preloader__icn">
-                      <div class="pswp__preloader__cut">
-                        <div class="pswp__preloader__donut"></div>
-                      </div>
-                    </div>
-                </div>
-            </div>
-            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
-                <div class="pswp__share-tooltip"></div> 
-            </div>
-            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
-            </button>
-            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
-            </button>
-            <div class="pswp__caption">
-                <div class="pswp__caption__center"></div>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-
-        gtag('config', 'UA-149874671-1');
-    </script>
-
-
-
-
-
-<script>
-    function initialTyped () {
-        var typedTextEl = $('.typed-text');
-        if (typedTextEl && typedTextEl.length > 0) {
-            var typed = new Typed('.typed-text', {
-                strings: ["Think like an artist, develop like an artisan", "用艺术家思维去思考问题，用工匠创造精神去开发", "Then am I A happy fly, If I live Or if I die.", "不管我活着，还是我死去，我都是一只快乐的飞来飞去的牛虻"],
-                typeSpeed: 90,
-                loop: true,
-                loopCount: Infinity,
-                backSpeed: 20,
-            });
-        }
-    }
-
-    if ($('.article-header') && $('.article-header').length) {
-        $(document).ready(function () {
-            initialTyped();
-        });
-    }
-</script>
-
-
-</html>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="built_in">require</span>(<span class="string">'shelljs/global'</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> readlineSync = <span class="built_in">require</span>(<span class="string">'readline-sync'</span>);</span><br><span class="line">process.stdin.setEncoding(<span class="string">'utf8'</span>);</span><br><span class="line">process.stdout.write(<span class="string">"现在开始新建Hexo博客文章......\n"</span>);</span><br><span class="line">process.stdout.write(<span class="string">"系统中的博客分类如下：\n"</span>);</span><br><span class="line">process.stdout.write(<span class="string">"0：无分类\t1：小学数学\t2：小学语文\t3：小学英语\t4：杂谈随笔\t5：工具字典\t6：手工输入分类名称\t其他按键：退出\n"</span>);</span><br><span class="line"><span class="keyword">var</span> input = readlineSync.question(<span class="string">'请选择新建文章应该所属的分类（默认：0）：'</span>);</span><br><span class="line"><span class="keyword">if</span>([<span class="string">''</span>].indexOf(input) == <span class="number">0</span>) input = <span class="string">'0'</span>;</span><br><span class="line"><span class="keyword">var</span> category, cmdStr;</span><br><span class="line"><span class="keyword">switch</span>(input)&#123;</span><br><span class="line">    <span class="keyword">case</span> <span class="string">'0'</span>:</span><br><span class="line">      <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">case</span> <span class="string">'1'</span>:</span><br><span class="line">      category = <span class="string">'小学数学'</span>;</span><br><span class="line">      <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">case</span> <span class="string">'2'</span>:</span><br><span class="line">      category = <span class="string">'小学语文'</span>;</span><br><span class="line">      <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">case</span> <span class="string">'3'</span>:</span><br><span class="line">      category = <span class="string">'小学英语'</span>;</span><br><span class="line">      <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">case</span> <span class="string">'4'</span>:</span><br><span class="line">      category = <span class="string">'杂谈随笔'</span>;</span><br><span class="line">      <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">case</span> <span class="string">'5'</span>:</span><br><span class="line">      category = <span class="string">'工具字典'</span>;</span><br><span class="line">      <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">case</span> <span class="string">'6'</span>:</span><br><span class="line">      category = readlineSync.question(<span class="string">"请输入您的分类名称："</span>);</span><br><span class="line">      <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">default</span>:</span><br><span class="line">      bye(<span class="string">"再见，Bye！"</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> title = readlineSync.question(<span class="string">"请输入您的文章标题："</span>).toString().trim();</span><br><span class="line"><span class="keyword">if</span>([<span class="string">''</span>, <span class="string">'null'</span>].indexOf(title) == <span class="number">-1</span>)&#123;</span><br><span class="line">    <span class="keyword">if</span>(category != <span class="literal">null</span> || [<span class="string">''</span>, <span class="string">'null'</span>].indexOf(input) &gt; <span class="number">-1</span>)&#123;</span><br><span class="line">        <span class="built_in">console</span>.warn(<span class="string">"您选择的分类是【"</span> + category + <span class="string">"】"</span>);</span><br><span class="line">        cmdStr = <span class="string">'hexo new -p "'</span> + category + <span class="string">'/'</span> + title + <span class="string">'" "'</span> + title + <span class="string">'"'</span>;</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        cmdStr = <span class="string">'hexo new "'</span>+ title + <span class="string">'"'</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">    bye(<span class="string">"再见，Bye！"</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> isPush = readlineSync.question(<span class="string">"是否拉取最新的GIT仓库数据（y/n，默认：y）："</span>).toString().trim();</span><br><span class="line"><span class="keyword">if</span>([<span class="string">''</span>, <span class="string">'y'</span>, <span class="string">'Y'</span>, <span class="string">'yes'</span>, <span class="string">'Yes'</span>, <span class="string">'YES'</span>].indexOf(isPush) &gt; <span class="number">-1</span>)&#123;</span><br><span class="line">    exec(<span class="string">'git pull origin master'</span>, (err,stdout,stderr) =&gt; &#123;</span><br><span class="line">        <span class="keyword">if</span>(err) &#123;</span><br><span class="line">            <span class="built_in">console</span>.log(<span class="string">'get weather api error:'</span> + stderr);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            newPost(cmdStr);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">    newPost(cmdStr);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">newPost</span>(<span class="params">cmdStr</span>)</span>&#123;</span><br><span class="line">    exec(cmdStr, (err,stdout,stderr) =&gt; &#123;</span><br><span class="line">        <span class="keyword">if</span>(err) &#123;</span><br><span class="line">            <span class="built_in">console</span>.log(<span class="string">'get weather api error:'</span> + stderr);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            bye(<span class="string">"《"</span> + title + <span class="string">"》已经创建成功，请开始尽情的写作吧！"</span>); </span><br><span class="line">        &#125;</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">bye</span>(<span class="params">message</span>)</span>&#123;</span><br><span class="line">    process.stdout.write(<span class="string">"\n"</span>);</span><br><span class="line">    <span class="built_in">console</span>.log(message);</span><br><span class="line">    process.exit(<span class="number">0</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="创建-generateanddeployjs-文件"><a class="markdownIt-Anchor" href="#创建-generateanddeployjs-文件"></a> 创建 <code>generateAndDeploy.js</code> 文件</h2>
+<blockquote>
+<p>完成Clean、生成静态文件、推送到GIT、发布到互联网</p>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="built_in">require</span>(<span class="string">'shelljs/global'</span>);</span><br><span class="line"><span class="keyword">var</span> readlineSync = <span class="built_in">require</span>(<span class="string">'readline-sync'</span>);</span><br><span class="line">process.stdin.setEncoding(<span class="string">'utf8'</span>);</span><br><span class="line"><span class="keyword">var</span> isPush = readlineSync.question(<span class="string">"是否推送至GIT仓库数据（y/n，默认：y）："</span>).toString().trim();</span><br><span class="line"><span class="keyword">var</span> isDeploy = readlineSync.question(<span class="string">"是否仅本地预览不发布到互联网（y/n，默认：n）："</span>).toString().trim();</span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">"正在清理【Hexo】缓存文件 ..."</span>);</span><br><span class="line">exec(<span class="string">'hexo clean'</span>, (err,stdout,stderr) =&gt; &#123;</span><br><span class="line">    <span class="keyword">if</span>(err) &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">'get Hexo Clean API error:'</span> + stderr);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">"正在生成【Hexo】静态文件 ..."</span>);</span><br><span class="line">        exec(<span class="string">'hexo generate'</span>, (err,stdout,stderr) =&gt; &#123;</span><br><span class="line">            <span class="keyword">if</span>(err) &#123;</span><br><span class="line">                <span class="built_in">console</span>.log(<span class="string">'get Hexo Generate API error:'</span> + stderr);</span><br><span class="line">            &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                hexoToGit(isPush, isDeploy)</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br><span class="line">    </span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">hexoToGit</span>(<span class="params">isPush, isDeploy</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">if</span>([<span class="string">''</span>, <span class="string">'y'</span>, <span class="string">'Y'</span>, <span class="string">'yes'</span>, <span class="string">'Yes'</span>, <span class="string">'YES'</span>].indexOf(isPush) &gt; <span class="number">-1</span>)&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">'正在推送至Github.com代码仓库 ...'</span>);</span><br><span class="line">        exec(<span class="string">'git add .'</span>);</span><br><span class="line">        exec(<span class="string">'git commit -m "add new hexo post!"'</span>);</span><br><span class="line">        exec(<span class="string">'git push --all'</span>, (err,stdout,stderr) =&gt; &#123;</span><br><span class="line">            <span class="keyword">if</span>(err) &#123;</span><br><span class="line">                <span class="built_in">console</span>.log(<span class="string">'get GIT API error:'</span> + stderr);</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                hexoDeploy(isDeploy);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        hexoDeploy(isDeploy);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">hexoDeploy</span>(<span class="params">isDeploy</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">if</span>([<span class="string">''</span>, <span class="string">'n'</span>, <span class="string">'N'</span>, <span class="string">'no'</span>, <span class="string">'No'</span>, <span class="string">'NO'</span>].indexOf(isDeploy) &gt; <span class="number">-1</span>)&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">'正在发布【Hexo】到互联网 ...'</span>);</span><br><span class="line">        exec(<span class="string">'hexo deploy'</span>);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">'正在启动【Hexo】本地预览服务器 ...'</span>);</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">'如果需要退出预览模式，请按 Ctrl + C 键退出！'</span>);</span><br><span class="line">        exec(<span class="string">'hexo server'</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="创建-scriptseventlistenerjs-文件"><a class="markdownIt-Anchor" href="#创建-scriptseventlistenerjs-文件"></a> 创建 <code>scripts\eventListener.js</code> 文件</h2>
+<blockquote>
+<p>监听 <code>Hexo</code> 的 <code>new</code> 事件，创建文件后在 <code>Visual Studio Code</code> 中打开文件所新建的文件</p>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> os = <span class="built_in">require</span>(<span class="string">'os'</span>);</span><br><span class="line"><span class="keyword">var</span> exec = <span class="built_in">require</span>(<span class="string">'child_process'</span>).exec</span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    hexo.on(<span class="string">'new'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">data</span>)</span>&#123; </span><br><span class="line">        <span class="keyword">if</span>(os.platform() == <span class="string">'win32'</span>)&#123;</span><br><span class="line">            exec(<span class="string">'start "" "C:\\Program Files\\Visual Studio Code\\Visual_Studio_Code.exe" '</span> + data.path);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(os.platform() == <span class="string">'darwin'</span>)&#123;</span><br><span class="line">            exec(<span class="string">'open -a "/Applications/Visual Studio Code.app" '</span> + data.path); </span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">&#125; <span class="keyword">catch</span> (e) &#123;</span><br><span class="line">	<span class="built_in">console</span>.log(<span class="string">"产生了一个错误&lt;(￣3￣)&gt; !，错误详情为："</span> + e.toString());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="在-packagejson-中修改配置"><a class="markdownIt-Anchor" href="#在-packagejson-中修改配置"></a> 在 <code>package.json</code> 中修改配置</h2>
+<figure class="highlight json"><table><tr><td class="code"><pre><span class="line">&#123;<span class="attr">"scripts"</span>: &#123;</span><br><span class="line">    <span class="attr">"新建博客"</span>: <span class="string">"node createHexoPost.js"</span>,</span><br><span class="line">    <span class="attr">"发布博客"</span>: <span class="string">"node generateAndDeploy.js"</span>,</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined" target="_blank" rel="noopener">Gadfly</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://blog.gadfly.pub/2019/11/08/zai-a-li-yun-zhong-da-jian-hexo-bo-ke/">https://blog.gadfly.pub/2019/11/08/zai-a-li-yun-zhong-da-jian-hexo-bo-ke/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://blog.gadfly.pub">牛虻的世界</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Hexo/">Hexo    </a><a class="post-meta__tags" href="/tags/Markdown/">Markdown    </a><a class="post-meta__tags" href="/tags/%E9%98%BF%E9%87%8C%E4%BA%91/">阿里云    </a></div><div class="post_share"><div class="social-share" data-image="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/css/share.min.css"><script src="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/js/social-share.min.js"></script></div></div><div class="post-reward"><a class="reward-button"><i class="fa fa-qrcode"></i> 打赏<div class="reward-main"><ul class="reward-all"><li class="reward-item"><img class="lazyload post-qr-code__img" src="/img/wechat.jpg"><div class="post-qr-code__desc">微信</div></li><li class="reward-item"><img class="lazyload post-qr-code__img" src="/img/alipay.jpg"><div class="post-qr-code__desc">支付寶</div></li></ul></div></a></div><nav class="pagination_post" id="pagination"><div class="prev-post pull_left"><a href="/2019/11/09/hexo-xiang-guan-pei-zhi-he-shi-yong/"><img class="prev_cover lazyload" data-src="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg.png" onerror="onerror=null;src='/img/404.jpg'"><div class="label">上一篇</div><div class="prev_info"><span>Hexo相关配置和使用</span></div></a></div><div class="next-post pull_right"><a href="/2016/03/30/hello-world/"><img class="next_cover lazyload" data-src="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg.png" onerror="onerror=null;src='/img/404.jpg'"><div class="label">下一篇</div><div class="next_info"><span>Hello World</span></div></a></div></nav><div class="relatedPosts"><div class="relatedPosts_headline"><i class="fa fa-fw fa-thumbs-up" aria-hidden="true"></i><span> 相关推荐</span></div><div class="relatedPosts_list"><div class="relatedPosts_item"><a href="/2019/11/09/hexo-qi-niu-cha-jian-an-zhuang-yu-shi-yong/" title="Hexo七牛插件安装与使用"><img class="relatedPosts_cover lazyload"data-src="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg.png"><div class="relatedPosts_title">Hexo七牛插件安装与使用</div></a></div><div class="relatedPosts_item"><a href="/2019/11/09/hexo-xiang-guan-pei-zhi-he-shi-yong/" title="Hexo相关配置和使用"><img class="relatedPosts_cover lazyload"data-src="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg.png"><div class="relatedPosts_title">Hexo相关配置和使用</div></a></div><div class="relatedPosts_item"><a href="/2019/11/25/markdown-zhong-shu-xue-gong-shi-zheng-li/" title="Markdown中数学公式整理"><img class="relatedPosts_cover lazyload"data-src="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg.png"><div class="relatedPosts_title">Markdown中数学公式整理</div></a></div><div class="relatedPosts_item"><a href="/2019/11/09/markdown-ji-ben-yu-fa/" title="Markdown基本语法"><img class="relatedPosts_cover lazyload"data-src="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg.png"><div class="relatedPosts_title">Markdown基本语法</div></a></div><div class="relatedPosts_item"><a href="/2019/11/09/vscode-qi-niu-yun-shang-chuan-cha-jian/" title="VScode-七牛云上传插件"><img class="relatedPosts_cover lazyload"data-src="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg.png"><div class="relatedPosts_title">VScode-七牛云上传插件</div></a></div></div><div class="clear_both"></div></div><hr><div id="post-comment"><div class="comment_headling"><i class="fa fa-comments fa-fw" aria-hidden="true"></i><span> 评论</span></div><div id="lv-container" data-id="city" data-uid="MTAyMC80Nzc4NC8yNDI4MQ=="><script>(function(d, s) {
+    var j, e = d.getElementsByTagName(s)[0];
+    if (typeof LivereTower === 'function') { return; }
+    j = d.createElement(s);
+    j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+    j.async = true;
+    e.parentNode.insertBefore(j, e);
+})(document, 'script');</script></div></div></div></div><footer id="footer" style="background-image: url(https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg.png)"><div id="footer-wrap"><div class="copyright">&copy;2018 - 2019 By Gadfly</div><div class="framework-info"><span>驱动 </span><a href="http://hexo.io" target="_blank" rel="noopener"><span>Hexo</span></a><span class="footer-separator">|</span><span>主题 </span><a href="https://github.com/jerryc127/hexo-theme-butterfly" target="_blank" rel="noopener"><span>Butterfly</span></a></div><div class="icp"><a href="http://www.beian.miit.gov.cn/state/outPortal/loginPortal.action" target="_blank" rel="noopener"><img class="icp-icon" src="/img/icp.png"><span>滇ICP备 19010936</span></a></div></div></footer></div><section class="rightside" id="rightside"><div id="rightside-config-hide"><i class="fa fa-book" id="readmode" title="阅读模式"></i><i class="fa fa-plus" id="font_plus" title="放大字体"></i><i class="fa fa-minus" id="font_minus" title="缩小字体"></i><a class="translate_chn_to_cht" id="translateLink" href="javascript:translatePage();" title="简繁转换" target="_self">繁</a><i class="darkmode fa fa-moon-o" id="darkmode" title="夜间模式"></i></div><div id="rightside-config-show"><div id="rightside_config" title="设置"><i class="fa fa-cog" aria-hidden="true"></i></div><a id="to_comment" href="#post-comment" title="直达评论"><i class="scroll_to_comment fa fa-comments">  </i></a><i class="fa fa-list-ul close" id="mobile-toc-button" title="目录" aria-hidden="true"></i><i class="fa fa-arrow-up" id="go-up" title="回到顶部" aria-hidden="true"></i></div></section><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/medium-zoom/dist/medium-zoom.min.js"></script><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css"><script src="https://cdn.jsdelivr.net/npm/katex-copytex@latest/dist/katex-copytex.min.js"></script><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex-copytex@latest/dist/katex-copytex.min.css"><script>$(function () {
+  $('span.katex-display').wrap('<div class="katex-wrap"></div>')
+})</script><script async src="/js/search/local-search.js"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar@0.1.15/dist/snackbar.min.js"></script><script id="canvas_nest" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="/js/third-party/canvas-nest.js"></script><script src="/js/baidupush.js"> </script><script src="/js/tw_cn.js"></script><script>translateInitilization()
+</script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page@latest/instantpage.min.js" type="module"></script><script src="https://cdn.jsdelivr.net/npm/lazysizes@latest/lazysizes.min.js" async=""></script><script src="/js/third-party/click_heart.js"></script><div class="search-dialog" id="local-search"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章"></div></div></div><hr><div id="local-search-results"><div id="local-hits"></div><div id="local-stats"><div class="local-search-stats__hr" id="hr"><span>由</span> <a href="https://github.com/wzpan/hexo-generator-search" target="_blank" rel="noopener" style="color:#49B1F5;">hexo-generator-search</a>
+ <span>提供支持</span></div></div></div><span class="search-close-button"><i class="fa fa-times"></i></span></div><div class="search-mask"></div></body></html>
