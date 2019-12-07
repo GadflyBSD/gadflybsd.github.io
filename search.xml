@@ -4,6 +4,33 @@
   
     
     <entry>
+      <title>将一个已存在的目录转换为一个 GIT 项目并托管到 GITHUB 仓库</title>
+      <link href="/2019/12/07/gong-ju-zi-liao/jiang-yi-ge-yi-cun-zai-de-mu-lu-zhuan-huan-wei-yi-ge-git-xiang-mu-bing-tuo-guan-dao-github-cang-ku/"/>
+      <url>/2019/12/07/gong-ju-zi-liao/jiang-yi-ge-yi-cun-zai-de-mu-lu-zhuan-huan-wei-yi-ge-git-xiang-mu-bing-tuo-guan-dao-github-cang-ku/</url>
+      
+        <content type="html"><![CDATA[<ol><li><p>进入项目所在目录，右键，点击Git Bash Here进入终端</p></li><li><p>将目录初始化为一个 Git 项目</p> <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> git init</span></span><br></pre></td></tr></table></figure><p>执行完后会在目录中创建一个 .git 隐藏文件夹</p></li><li><p>将所有文件放进新的本地git仓库</p> <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> git add .</span></span><br></pre></td></tr></table></figure><p>如果本地已经有.gitignore文件，会按照已有规则过滤不需要添加的文件。如果不想要添加所有文件，可以把符号换成具体的文件名</p></li><li><p>将添加的文件提交到仓库</p> <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> git commit -m <span class="string">"Initial commit"</span></span></span><br></pre></td></tr></table></figure></li><li><p>将本地仓库关联到远程仓库</p> <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> git remote add origin https://github.com/javacfox/Blog_Back_Up</span></span><br></pre></td></tr></table></figure></li><li><p>运行以下命令查看结果</p> <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> git pull origin master</span></span><br></pre></td></tr></table></figure></li><li><p>提交代码之前先执行一下同步</p> <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> git push origin master</span></span><br></pre></td></tr></table></figure></li><li><p>如果报错，可以执行如下命令,慎用</p> <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> git pull origin master --allow-unrelated-histories</span></span><br></pre></td></tr></table></figure></li></ol><p>后面加上 --allow-unrelated-histories，把两段不相干的 分支进行强行合并，因为是提交到一个空白仓库，所以可以强制执行，然后在执行git push origin master</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 工具资料 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> GIT </tag>
+            
+            <tag> GITHUB </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>Markdown中数学公式整理</title>
       <link href="/2019/11/25/markdown-zhong-shu-xue-gong-shi-zheng-li/"/>
       <url>/2019/11/25/markdown-zhong-shu-xue-gong-shi-zheng-li/</url>
