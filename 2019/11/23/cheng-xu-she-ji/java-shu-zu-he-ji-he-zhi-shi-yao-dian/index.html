@@ -1,0 +1,309 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><title>Java数组和集合（List、Map、Set）知识要点 | 牛虻的世界</title><meta name="description" content="Java数组和集合（List、Map、Set）知识要点"><meta name="keywords" content="Java,Array,Map,List,Set"><meta name="author" content="Gadfly"><meta name="copyright" content="Gadfly"><meta name="format-detection" content="telephone=no"><link rel="shortcut icon" href="/img/favicon.ico"><link rel="preconnect" href="//cdn.jsdelivr.net"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Java数组和集合（List、Map、Set）知识要点"><meta name="twitter:description" content="Java数组和集合（List、Map、Set）知识要点"><meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg.png"><meta property="og:type" content="article"><meta property="og:title" content="Java数组和集合（List、Map、Set）知识要点"><meta property="og:url" content="https://blog.gadfly.pub/2019/11/23/cheng-xu-she-ji/java-shu-zu-he-ji-he-zhi-shi-yao-dian/"><meta property="og:site_name" content="牛虻的世界"><meta property="og:description" content="Java数组和集合（List、Map、Set）知识要点"><meta property="og:image" content="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg.png"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><script src="https://cdn.jsdelivr.net/npm/js-cookie/dist/js.cookie.min.js"></script><script>const autoChangeMode = 'false'
+var t = Cookies.get("theme");
+if (autoChangeMode == '1'){
+const isDarkMode = window.matchMedia("(prefers-color-scheme: dark)").matches
+const isLightMode = window.matchMedia("(prefers-color-scheme: light)").matches
+const isNotSpecified = window.matchMedia("(prefers-color-scheme: no-preference)").matches
+const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+
+if (t === undefined){
+  if (isLightMode) activateLightMode()
+  else if (isDarkMode) activateDarkMode()
+  else if (isNotSpecified || hasNoSupport){
+    console.log('You specified no preference for a color scheme or your browser does not support it. I Schedule dark mode during night time.')
+    now = new Date();
+    hour = now.getHours();
+    isNight = hour < 6 || hour >= 18
+    isNight ? activateDarkMode() : activateLightMode()
+}
+} else if (t == 'light') activateLightMode()
+else activateDarkMode()
+
+
+} else if (autoChangeMode == '2'){
+  now = new Date();
+  hour = now.getHours();
+  isNight = hour < 6 || hour >= 18
+  if(t === undefined) isNight? activateDarkMode() : activateLightMode()
+  else if (t === 'light') activateLightMode()
+  else activateDarkMode() 
+} else {
+  if ( t == 'dark' ) activateDarkMode()
+  else if ( t == 'light') activateLightMode()
+}
+
+function activateDarkMode(){
+  document.documentElement.setAttribute('data-theme', 'dark')
+  if (document.querySelector('meta[name="theme-color"]') !== null){
+    document.querySelector('meta[name="theme-color"]').setAttribute('content','#000')
+  }
+}
+function activateLightMode(){
+  document.documentElement.setAttribute('data-theme', 'light')
+  if (document.querySelector('meta[name="theme-color"]') !== null){
+  document.querySelector('meta[name="theme-color"]').setAttribute('content','#fff')
+  }
+}</script><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@latest/css/font-awesome.min.css"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar@0.1.15/dist/snackbar.min.css"><link rel="canonical" href="https://blog.gadfly.pub/2019/11/23/cheng-xu-she-ji/java-shu-zu-he-ji-he-zhi-shi-yao-dian/"><link rel="prev" title="Markdown中数学公式整理" href="https://blog.gadfly.pub/2019/11/25/gong-ju-zi-liao/markdown-zhong-shu-xue-gong-shi-zheng-li/"><link rel="next" title="Spring Boot 笔记: 集成Spring Security + JWT实现Oauth2.0的授权码模式" href="https://blog.gadfly.pub/2019/11/11/cheng-xu-she-ji/springboot-bi-ji-ji-cheng-springsecurity-jwt-shi-xian-oauth2-de-shou-quan-ma-mo-shi/"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Titillium+Web"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容:${query}"}},
+  translate: {"defaultEncoding":2,"translateDelay":0,"cookieDomain":"https://xxx/","msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"简"},
+  highlight_copy: 'true',
+  highlight_lang: 'true',
+  highlight_shrink: 'false',
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  bookmark: {
+    title: 'Snackbar.bookmark.title',
+    message_prev: '按',
+    message_next: '键将本页加入书签'
+  },
+  runtime_unit: '天',
+  copyright: undefined,
+  copy_copyright_js: false,
+  ClickShowText: undefined,
+  medium_zoom: 'true',
+  Snackbar: {"bookmark":{"title":"Snackbar.bookmark.title","message_prev":"按","message_next":"键将本页加入书签"},"chs_to_cht":"你已切换为繁体","cht_to_chs":"你已切换为简体","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#49b1f5","bgDark":"#2d3035","position":"bottom-left"}
+  
+}</script></head><body><div id="header"> <div id="page-header"><span class="pull_left" id="blog_name"><a class="blog_title" id="site-name" href="/">牛虻的世界</a></span><i class="fa fa-bars fa-fw toggle-menu pull_right close" aria-hidden="true"></i><span class="pull_right menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 文章归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 文章标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fa fa-folder-open"></i><span> 文章分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fa fa-link"></i><span> 友情链接</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-heart"></i><span> 关于我</span></a></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> List</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/music/"><i class="fa-fw fa fa-music"></i><span> 我的音乐</span></a></li><li><a class="site-page" href="/movies/"><i class="fa-fw fa fa-film"></i><span> 我的电影</span></a></li><li><a class="site-page" href="/books/"><i class="fa-fw fa fa-book"></i><span> 我的书籍</span></a></li><li><a class="site-page" href="/games/"><i class="fa-fw fa fa-gamepad"></i><span> 我的游戏</span></a></li><li><a class="site-page" href="/gallery/"><i class="fa-fw fa fa-picture-o"></i><span> 我的相册</span></a></li></ul></div></div></span><span class="pull_right" id="search_button"><a class="site-page social-icon search"><i class="fa fa-search fa-fw"></i><span> 搜索</span></a></span></div></div><div id="mobile-sidebar"><div id="menu_mask"></div><div id="mobile-sidebar-menus"><div class="mobile_author_icon"><img class="lazyload avatar_img" src="https://api.btstu.cn/sjtx/api.php?lx=c3&amp;format=images" onerror="onerror=null;src='/img/friend_404.gif'"></div><div class="mobile_post_data"><div class="mobile_data_item is_center"><div class="mobile_data_link"><a href="/archives/"><div class="headline">文章</div><div class="length_num">31</div></a></div></div><div class="mobile_data_item is_center">      <div class="mobile_data_link"><a href="/tags/"><div class="headline">标签</div><div class="length_num">39</div></a></div></div><div class="mobile_data_item is_center">     <div class="mobile_data_link"><a href="/categories/"><div class="headline">分类</div><div class="length_num">23</div></a></div></div></div><hr><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 文章归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 文章标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fa fa-folder-open"></i><span> 文章分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fa fa-link"></i><span> 友情链接</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-heart"></i><span> 关于我</span></a></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> List</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/music/"><i class="fa-fw fa fa-music"></i><span> 我的音乐</span></a></li><li><a class="site-page" href="/movies/"><i class="fa-fw fa fa-film"></i><span> 我的电影</span></a></li><li><a class="site-page" href="/books/"><i class="fa-fw fa fa-book"></i><span> 我的书籍</span></a></li><li><a class="site-page" href="/games/"><i class="fa-fw fa fa-gamepad"></i><span> 我的游戏</span></a></li><li><a class="site-page" href="/gallery/"><i class="fa-fw fa fa-picture-o"></i><span> 我的相册</span></a></li></ul></div></div></div><div id="mobile-sidebar-toc"><div class="toc_mobile_headline">目录</div><ol class="toc_mobile_items"><li class="toc_mobile_items-item toc_mobile_items-level-1"><a class="toc_mobile_items-link" href="#数组和集合的区别"><span class="toc_mobile_items-number">1.</span> <span class="toc_mobile_items-text"> 数组和集合的区别</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-1"><a class="toc_mobile_items-link" href="#数组和集合的定义方法"><span class="toc_mobile_items-number">2.</span> <span class="toc_mobile_items-text"> 数组和集合的定义方法</span></a><ol class="toc_mobile_items-child"><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#数组array"><span class="toc_mobile_items-number">2.1.</span> <span class="toc_mobile_items-text"> 数组（Array）</span></a><ol class="toc_mobile_items-child"><li class="toc_mobile_items-item toc_mobile_items-level-3"><a class="toc_mobile_items-link" href="#数组第一种定义方式"><span class="toc_mobile_items-number">2.1.1.</span> <span class="toc_mobile_items-text"> 数组第一种定义方式</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-3"><a class="toc_mobile_items-link" href="#数组第二种定义方式"><span class="toc_mobile_items-number">2.1.2.</span> <span class="toc_mobile_items-text"> 数组第二种定义方式</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-3"><a class="toc_mobile_items-link" href="#数组创建第三种方式先初始化后赋值"><span class="toc_mobile_items-number">2.1.3.</span> <span class="toc_mobile_items-text"> 数组创建第三种方式(先初始化，后赋值)</span></a></li></ol></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#集合"><span class="toc_mobile_items-number">2.2.</span> <span class="toc_mobile_items-text"> 集合</span></a><ol class="toc_mobile_items-child"><li class="toc_mobile_items-item toc_mobile_items-level-3"><a class="toc_mobile_items-link" href="#list-集合"><span class="toc_mobile_items-number">2.2.1.</span> <span class="toc_mobile_items-text"> List 集合</span></a><ol class="toc_mobile_items-child"><li class="toc_mobile_items-item toc_mobile_items-level-4"><a class="toc_mobile_items-link" href="#list集合包括list接口以及list接口的所有实现类-list集合具有以下特点"><span class="toc_mobile_items-number">2.2.1.1.</span> <span class="toc_mobile_items-text"> List集合包括List接口以及List接口的所有实现类。List集合具有以下特点：</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-4"><a class="toc_mobile_items-link" href="#list接口的实现类"><span class="toc_mobile_items-number">2.2.1.2.</span> <span class="toc_mobile_items-text"> List接口的实现类:</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-4"><a class="toc_mobile_items-link" href="#创建事例"><span class="toc_mobile_items-number">2.2.1.3.</span> <span class="toc_mobile_items-text"> 创建事例</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-4"><a class="toc_mobile_items-link" href="#list常用方法"><span class="toc_mobile_items-number">2.2.1.4.</span> <span class="toc_mobile_items-text"> List常用方法</span></a></li></ol></li><li class="toc_mobile_items-item toc_mobile_items-level-3"><a class="toc_mobile_items-link" href="#map-集合"><span class="toc_mobile_items-number">2.2.2.</span> <span class="toc_mobile_items-text"> Map 集合</span></a><ol class="toc_mobile_items-child"><li class="toc_mobile_items-item toc_mobile_items-level-4"><a class="toc_mobile_items-link" href="#map集合具有以下特点"><span class="toc_mobile_items-number">2.2.2.1.</span> <span class="toc_mobile_items-text"> Map集合具有以下特点</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-4"><a class="toc_mobile_items-link" href="#map接口的实现类"><span class="toc_mobile_items-number">2.2.2.2.</span> <span class="toc_mobile_items-text"> Map接口的实现类</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-4"><a class="toc_mobile_items-link" href="#map集合比较"><span class="toc_mobile_items-number">2.2.2.3.</span> <span class="toc_mobile_items-text"> Map集合比较</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-4"><a class="toc_mobile_items-link" href="#map常用方法"><span class="toc_mobile_items-number">2.2.2.4.</span> <span class="toc_mobile_items-text"> Map常用方法</span></a></li></ol></li><li class="toc_mobile_items-item toc_mobile_items-level-3"><a class="toc_mobile_items-link" href="#set-集合"><span class="toc_mobile_items-number">2.2.3.</span> <span class="toc_mobile_items-text"> Set 集合</span></a><ol class="toc_mobile_items-child"><li class="toc_mobile_items-item toc_mobile_items-level-4"><a class="toc_mobile_items-link" href="#set集合具有以下特点"><span class="toc_mobile_items-number">2.2.3.1.</span> <span class="toc_mobile_items-text"> Set集合具有以下特点</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-4"><a class="toc_mobile_items-link" href="#set接口的实现类"><span class="toc_mobile_items-number">2.2.3.2.</span> <span class="toc_mobile_items-text"> Set接口的实现类</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-4"><a class="toc_mobile_items-link" href="#各种set集合性能分析"><span class="toc_mobile_items-number">2.2.3.3.</span> <span class="toc_mobile_items-text"> 各种Set集合性能分析</span></a></li></ol></li></ol></li></ol></li><li class="toc_mobile_items-item toc_mobile_items-level-1"><a class="toc_mobile_items-link" href="#数组和集合的遍历方法"><span class="toc_mobile_items-number">3.</span> <span class="toc_mobile_items-text"> 数组和集合的遍历方法</span></a><ol class="toc_mobile_items-child"><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#数组的遍历"><span class="toc_mobile_items-number">3.1.</span> <span class="toc_mobile_items-text"> 数组的遍历</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#集合的遍历"><span class="toc_mobile_items-number">3.2.</span> <span class="toc_mobile_items-text"> 集合的遍历</span></a><ol class="toc_mobile_items-child"><li class="toc_mobile_items-item toc_mobile_items-level-3"><a class="toc_mobile_items-link" href="#list遍历"><span class="toc_mobile_items-number">3.2.1.</span> <span class="toc_mobile_items-text"> List遍历</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-3"><a class="toc_mobile_items-link" href="#map遍历"><span class="toc_mobile_items-number">3.2.2.</span> <span class="toc_mobile_items-text"> Map遍历</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-3"><a class="toc_mobile_items-link" href="#set遍历"><span class="toc_mobile_items-number">3.2.3.</span> <span class="toc_mobile_items-text"> Set遍历</span></a></li></ol></li></ol></li><li class="toc_mobile_items-item toc_mobile_items-level-1"><a class="toc_mobile_items-link" href="#数组和集合的排序"><span class="toc_mobile_items-number">4.</span> <span class="toc_mobile_items-text"> 数组和集合的排序</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-1"><a class="toc_mobile_items-link" href="#数组和集合的相互转换"><span class="toc_mobile_items-number">5.</span> <span class="toc_mobile_items-text"> 数组和集合的相互转换</span></a></li></ol></div></div><div id="body-wrap"><div id="web_bg" data-type="photo"></div><i class="fa fa-arrow-right" id="toggle-sidebar" aria-hidden="true">     </i><div class="auto_open" id="sidebar"><div class="sidebar-toc"><div class="sidebar-toc__title">目录</div><div class="sidebar-toc__progress"><span class="progress-notice">你已经读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar">     </div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#数组和集合的区别"><span class="toc-number">1.</span> <span class="toc-text"> 数组和集合的区别</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#数组和集合的定义方法"><span class="toc-number">2.</span> <span class="toc-text"> 数组和集合的定义方法</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#数组array"><span class="toc-number">2.1.</span> <span class="toc-text"> 数组（Array）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#数组第一种定义方式"><span class="toc-number">2.1.1.</span> <span class="toc-text"> 数组第一种定义方式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#数组第二种定义方式"><span class="toc-number">2.1.2.</span> <span class="toc-text"> 数组第二种定义方式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#数组创建第三种方式先初始化后赋值"><span class="toc-number">2.1.3.</span> <span class="toc-text"> 数组创建第三种方式(先初始化，后赋值)</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#集合"><span class="toc-number">2.2.</span> <span class="toc-text"> 集合</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#list-集合"><span class="toc-number">2.2.1.</span> <span class="toc-text"> List 集合</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#list集合包括list接口以及list接口的所有实现类-list集合具有以下特点"><span class="toc-number">2.2.1.1.</span> <span class="toc-text"> List集合包括List接口以及List接口的所有实现类。List集合具有以下特点：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#list接口的实现类"><span class="toc-number">2.2.1.2.</span> <span class="toc-text"> List接口的实现类:</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#创建事例"><span class="toc-number">2.2.1.3.</span> <span class="toc-text"> 创建事例</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#list常用方法"><span class="toc-number">2.2.1.4.</span> <span class="toc-text"> List常用方法</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#map-集合"><span class="toc-number">2.2.2.</span> <span class="toc-text"> Map 集合</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#map集合具有以下特点"><span class="toc-number">2.2.2.1.</span> <span class="toc-text"> Map集合具有以下特点</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#map接口的实现类"><span class="toc-number">2.2.2.2.</span> <span class="toc-text"> Map接口的实现类</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#map集合比较"><span class="toc-number">2.2.2.3.</span> <span class="toc-text"> Map集合比较</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#map常用方法"><span class="toc-number">2.2.2.4.</span> <span class="toc-text"> Map常用方法</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#set-集合"><span class="toc-number">2.2.3.</span> <span class="toc-text"> Set 集合</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#set集合具有以下特点"><span class="toc-number">2.2.3.1.</span> <span class="toc-text"> Set集合具有以下特点</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#set接口的实现类"><span class="toc-number">2.2.3.2.</span> <span class="toc-text"> Set接口的实现类</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#各种set集合性能分析"><span class="toc-number">2.2.3.3.</span> <span class="toc-text"> 各种Set集合性能分析</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#数组和集合的遍历方法"><span class="toc-number">3.</span> <span class="toc-text"> 数组和集合的遍历方法</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#数组的遍历"><span class="toc-number">3.1.</span> <span class="toc-text"> 数组的遍历</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#集合的遍历"><span class="toc-number">3.2.</span> <span class="toc-text"> 集合的遍历</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#list遍历"><span class="toc-number">3.2.1.</span> <span class="toc-text"> List遍历</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#map遍历"><span class="toc-number">3.2.2.</span> <span class="toc-text"> Map遍历</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#set遍历"><span class="toc-number">3.2.3.</span> <span class="toc-text"> Set遍历</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#数组和集合的排序"><span class="toc-number">4.</span> <span class="toc-text"> 数组和集合的排序</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#数组和集合的相互转换"><span class="toc-number">5.</span> <span class="toc-text"> 数组和集合的相互转换</span></a></li></ol></div></div></div><div id="content-outer"><div id="top-container" style="background-image: url(https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg.png)"><div id="post-info"><div id="post-title"><div class="posttitle">Java数组和集合（List、Map、Set）知识要点</div></div><div id="post-meta"><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 发表于 2019-11-23<span class="post-meta__separator">|</span><i class="fa fa-history" aria-hidden="true"></i> 更新于 2019-12-09</time><span class="post-meta__separator mobile_hidden">|</span><span class="mobile_hidden"><i class="fa fa-inbox post-meta__icon" aria-hidden="true"></i><a class="post-meta__categories" href="/categories/%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1/">程序设计</a><i class="fa fa-angle-right" aria-hidden="true"></i><i class="fa fa-inbox post-meta__icon" aria-hidden="true"></i><a class="post-meta__categories" href="/categories/%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1/JAVA/">JAVA</a></span><div class="post-meta-wordcount"><i class="fa fa-file-word-o post-meta__icon" aria-hidden="true"></i><span>字数总计: </span><span class="word-count">2.5k</span><span class="post-meta__separator">|</span><i class="fa fa-clock-o post-meta__icon" aria-hidden="true"></i><span>阅读时长: 9 分钟</span><span class="post-meta__separator">|</span><i class="fa fa-eye post-meta__icon" aria-hidden="true">       </i><span>阅读量: </span><span id="busuanzi_value_page_pv"></span></div></div></div></div><div class="layout layout_post" id="content-inner">   <article id="post"><div class="article-container" id="post-content"><p>  数组是JAVA语言内置的数据类型，它是一个线性的序列，所以它可以快速的访问其他的元素。但是速度是要有代价的，当你创建了一个数组之后，它的容量就固定了，而且在其生命周期里是不能改变的。还有一点，JAVA里面的数组是会做边界检查的，所以当你越界访问时，会抛出RuntimeException，当然边界检查是以牺牲效率为代价的。数组与其它容器类的区别体现在三个方面：效率、类型识别和可以持有primitives。<br />
+  JAVA里面提供的其他容器还包括List，Set和Map。他们处理对象的时候就好像这些这些对象都没有自己的类型一样，容器将它所含的元素都看成是JAVA中所有类的根类Object类型的，这样我们只需创建一种容器，就能把所有的类型的对象全部放进去。</p>
+<h1 id="数组和集合的区别"><a class="markdownIt-Anchor" href="#数组和集合的区别"></a> 数组和集合的区别</h1>
+<ol>
+<li>数组是大小固定的，并且同一个数组只能存放类型一样的数据（基本类型/引用类型）</li>
+<li>AVA集合可以存储和操作数目不固定的一组数据。</li>
+<li>JAVA集合只能存放引用类型的的数据，不能存放基本数据类型；数组可以。</li>
+</ol>
+<h1 id="数组和集合的定义方法"><a class="markdownIt-Anchor" href="#数组和集合的定义方法"></a> 数组和集合的定义方法</h1>
+<ul>
+<li>
+<h2 id="数组array"><a class="markdownIt-Anchor" href="#数组array"></a> 数组（Array）</h2>
+<ul>
+<li>
+<h3 id="数组第一种定义方式"><a class="markdownIt-Anchor" href="#数组第一种定义方式"></a> 数组第一种定义方式</h3>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//分配长度为 4 个 int 型的内存空间，并分别赋初始值1，2，3，4</span></span><br><span class="line"><span class="keyword">int</span>[] array = <span class="keyword">new</span> <span class="keyword">int</span>[]&#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>&#125;;</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<h3 id="数组第二种定义方式"><a class="markdownIt-Anchor" href="#数组第二种定义方式"></a> 数组第二种定义方式</h3>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//方式一的简写</span></span><br><span class="line"><span class="keyword">int</span>[] array = &#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>&#125;;</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<h3 id="数组创建第三种方式先初始化后赋值"><a class="markdownIt-Anchor" href="#数组创建第三种方式先初始化后赋值"></a> 数组创建第三种方式(先初始化，后赋值)</h3>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//分配长度为 4 的内存空间，并全部赋为默认值 0</span></span><br><span class="line"><span class="comment">//相当于 int[] array = new int[4]&#123;0, 0, 0, 0&#125; 的简写</span></span><br><span class="line"><span class="keyword">int</span>[] array = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">4</span>];</span><br><span class="line">array[<span class="number">0</span>] = <span class="number">1</span>;</span><br><span class="line">array[<span class="number">1</span>] = <span class="number">2</span>;</span><br><span class="line">array[<span class="number">2</span>] = <span class="number">3</span>;</span><br><span class="line">array[<span class="number">0</span>] = <span class="number">1000</span>;    <span class="comment">//在索引范围以内可以更改</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li>
+<h2 id="集合"><a class="markdownIt-Anchor" href="#集合"></a> 集合</h2>
+<ul>
+<li>
+<h3 id="list-集合"><a class="markdownIt-Anchor" href="#list-集合"></a> <code>List</code> 集合</h3>
+<ul>
+<li>
+<h4 id="list集合包括list接口以及list接口的所有实现类-list集合具有以下特点"><a class="markdownIt-Anchor" href="#list集合包括list接口以及list接口的所有实现类-list集合具有以下特点"></a> List集合包括List接口以及List接口的所有实现类。List集合具有以下特点：</h4>
+<ol>
+<li>集合中的元素允许重复</li>
+<li>集合中的元素是有顺序的，各元素插入的顺序就是各元素的顺序</li>
+<li>集合中的元素可以通过索引来访问或者设置</li>
+</ol>
+</li>
+<li>
+<h4 id="list接口的实现类"><a class="markdownIt-Anchor" href="#list接口的实现类"></a> List接口的实现类:</h4>
+<ol>
+<li>ArrayList：数组实现，查询快，增删慢，轻量级；(线程不安全)</li>
+<li>LinkedList：双向链表实现，增删快，查询慢 (线程不安全)</li>
+<li>Vector：数组实现，重量级 (线程安全、使用少)</li>
+</ol>
+</li>
+<li>
+<h4 id="创建事例"><a class="markdownIt-Anchor" href="#创建事例"></a> 创建事例</h4>
+  <figure class="highlight java"><table><tr><td class="code"><pre><span class="line">List&lt;String&gt; strList = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">strList.add(<span class="string">"a"</span>);</span><br><span class="line">strList.add(<span class="string">"b"</span>);</span><br><span class="line">strList.add(<span class="string">"c"</span>);</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<h4 id="list常用方法"><a class="markdownIt-Anchor" href="#list常用方法"></a> List常用方法</h4>
+<ul>
+<li><code>void add(int index, Object element)</code> ：添加对象element到位置index上</li>
+<li><code>boolean addAll(int index, Collection collection)</code> ：在index位置后添加容器collection中所有的元素</li>
+<li><code>Object get(int index)</code> ：取出下标为index的位置的元素</li>
+<li><code>int indexOf(Object element)</code> ：查找对象element 在List中第一次出现的位置</li>
+<li><code>int lastIndexOf(Object element)</code> ：查找对象element 在List中最后出现的位置</li>
+<li><code>Object remove(int index)</code> ：删除index位置上的元素</li>
+<li><code>ListIterator listIterator(int startIndex)</code>：返回一个ListIterator 跌代器，开始位置为startIndex</li>
+<li><code>List subList(int fromIndex, int toIndex)</code> ：返回一个子列表List ,元素存放为从 fromIndex 到toIndex之前的一个元素</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<h3 id="map-集合"><a class="markdownIt-Anchor" href="#map-集合"></a> <code>Map</code> 集合</h3>
+<ul>
+<li>
+<h4 id="map集合具有以下特点"><a class="markdownIt-Anchor" href="#map集合具有以下特点"></a> Map集合具有以下特点</h4>
+<ol>
+<li>Map接口并没有继承Collection接口，提供的是key到value的映射</li>
+<li>Map中不能包含相同的key</li>
+</ol>
+</li>
+<li>
+<h4 id="map接口的实现类"><a class="markdownIt-Anchor" href="#map接口的实现类"></a> Map接口的实现类</h4>
+<ul>
+<li>HashMap：键值对，key不能重复，但是value可以重复；key的实现就是HashSet；value对应着放；允许null的键或值；</li>
+<li>Hashtable：线程安全的，不允许null的键或值；</li>
+<li>Properties:：key和value都是String类型，用来读配置文件；</li>
+<li>TreeMap：对key排好序的Map; key 就是TreeSet, value对应每个key; key要实现Comparable接口或TreeMap有自己的构造器；</li>
+<li>LinkedHashMap： 此实现与HashMap的不同之处在于，后者维护着一个运行于所有条目的双重链接列表。存储的数据是有序的。</li>
+</ul>
+</li>
+<li>
+<h4 id="map集合比较"><a class="markdownIt-Anchor" href="#map集合比较"></a> Map集合比较</h4>
+<ul>
+<li>HashMap的存入顺序和输出顺序无关。</li>
+<li>LinkedHashMap 则保留了键值对的存入顺序。</li>
+<li>TreeMap则是对Map中的元素进行排序。</li>
+<li>因为HashMap和LinkedHashMap 存储数据的速度比直接使用TreeMap 要快，存取效率要高。</li>
+<li>当完成了所有的元素的存放后，我们再对整个的Map中的元素进行排序。这样可以提高整个程序的运行的效率，缩短执行时间。</li>
+</ul>
+<blockquote>
+<p>注意：TreeMap中是根据键（Key）进行排序的。而如果我们要使用TreeMap来进行正常的排序的话，Key 中存放的对象必须实现Comparable 接口。</p>
+</blockquote>
+</li>
+<li>
+<h4 id="map常用方法"><a class="markdownIt-Anchor" href="#map常用方法"></a> Map常用方法</h4>
+<ul>
+<li><code>Object put(Object key,Object value)</code>：用来存放一个键-值对Map中</li>
+<li><code>Object remove(Object key)</code>：根据key(键)，移除键-值对，并将值返回</li>
+<li><code>void putAll(Map mapping)</code> ：将另外一个Map中的元素存入当前的Map中</li>
+<li><code>void clear()</code> ：清空当前Map中的元素</li>
+<li><code>Object get(Object key)</code> ：根据key(键)取得对应的值</li>
+<li><code>boolean containsKey(Object key)</code> ：判断Map中是否存在某键（key）</li>
+<li><code>boolean containsValue(Object value)</code>:判断Map中是否存在某值(value)</li>
+<li><code>public Set keySet()</code> ：返回所有的键（key），并使用Set容器存放</li>
+<li><code>public Collection values()</code> ：返回所有的值（Value），并使用Collection存放</li>
+<li><code>public Set entrySet()</code> ：返回一个实现 Map.Entry 接口的元素 Set</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<h3 id="set-集合"><a class="markdownIt-Anchor" href="#set-集合"></a> <code>Set</code> 集合</h3>
+<ul>
+<li>
+<h4 id="set集合具有以下特点"><a class="markdownIt-Anchor" href="#set集合具有以下特点"></a> Set集合具有以下特点</h4>
+<ol>
+<li>集合中不包含重复元素(你可以重复添加，但只会保留第1个)</li>
+<li>集合中的元素不一定保证有序</li>
+</ol>
+</li>
+<li>
+<h4 id="set接口的实现类"><a class="markdownIt-Anchor" href="#set接口的实现类"></a> Set接口的实现类</h4>
+<ol>
+<li><code>HashSet</code>：equals返回true，hashCode返回相同的整数；哈希表；存储的数据是无序的。
+<ul>
+<li>HashSet的特征
+<ul>
+<li>不仅不能保证元素插入的顺序，而且在元素在以后的顺序中也可能变化（这是由HashSet按HashCode存储对象（元素）决定的，对象变化则可能导致HashCode变化</li>
+<li>HashSet是线程非安全的</li>
+<li>HashSet元素值可以为NULL</li>
+</ul>
+</li>
+<li>HashSet常用方法
+<ul>
+<li><code>public boolean contains(Object o)</code> ：如果set包含指定元素，返回true</li>
+<li><code>public Iterator iterator()</code> ：返回set中元素的迭代器</li>
+<li><code>public Object[] toArray()</code>：返回包含set中所有元素的数组public Object[] toArray(Object[] a) ：返回包含set中所有元素的数组，返回数组的运行时类型是指定数组的运行时类型</li>
+<li><code>public boolean add(Object o)</code> ：如果set中不存在指定元素，则向set加入</li>
+<li><code>public boolean remove(Object o)</code>：如果set中存在指定元素，则从set中删除</li>
+<li><code>public boolean removeAll(Collection c)</code>：如果set包含指定集合，则从set中删除指定集合的所有元素</li>
+<li><code>public boolean containsAll(Collection c)</code> ：如果set包含指定集合的所有元素，返回true。如果指定集合也是一个set，只有是当前set的子集时，方法返回true</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><code>LinkedHashSet</code>：此实现与HashSet的不同之外在于，后者维护着一个运行于所有条目的双重链接列表。存储的数据是有序的。</li>
+<li><code>TreeSet</code>：TreeSet实现了SortedSet接口，顾名思义这是一种排序的Set集合，查看jdk源码发现底层是用TreeMap实现的，本质上是一个红黑树原理。 正因为它是排序了的，所以相对HashSet来说，TreeSet提供了一些额外的按排序位置访问元素的方法，例如first(), last(), lower(), higher(), subSet(), headSet(), tailSet().</li>
+<li><code>EnumSet</code>：顾名思义就是专为枚举类型设计的集合，因此集合元素必须是枚举类型，否则会抛出异常。 EnumSet集合也是有序的，其顺序就是Enum类内元素定义的顺序。 EnumSet存取的速度非常快，批量操作的速度也很快。EnumSet主要提供以下方法，allOf, complementOf, copyOf, noneOf, of, range等。注意到EnumSet并没有提供任何构造函数，要创建一个EnumSet集合对象，只需要调用allOf等方法</li>
+</ol>
+</li>
+</ul>
+</li>
+<li>
+<h4 id="各种set集合性能分析"><a class="markdownIt-Anchor" href="#各种set集合性能分析"></a> 各种Set集合性能分析</h4>
+<ul>
+<li>HashSet和TreeSet是Set集合中用得最多的I集合。HashSet总是比TreeSet集合性能好，因为HashSet不需要额维护元素的顺序。</li>
+<li>LinkedHashSet需要用额外的链表维护元素的插入顺序，因此在插入时性能比HashSet低，但在迭代访问（遍历）时性能更高。因为插入的时候即要计算hashCode又要维护链表，而遍历的时候只需要按链表来访问元素。</li>
+<li>EnumSet元素是所有Set元素中性能最好的，但是它只能保存Enum类型的元素</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h1 id="数组和集合的遍历方法"><a class="markdownIt-Anchor" href="#数组和集合的遍历方法"></a> 数组和集合的遍历方法</h1>
+<ul>
+<li>
+<h2 id="数组的遍历"><a class="markdownIt-Anchor" href="#数组的遍历"></a> 数组的遍历</h2>
+<ul>
+<li>for 形式<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;in1.length;i++)&#123;</span><br><span class="line">  <span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">0</span>;j&lt;in1[i].length;j++)&#123;</span><br><span class="line">      System.out.println(in1[i][j]);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li>增强for<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span>[][]in1=&#123;&#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>&#125;,&#123;<span class="number">4</span>&#125;,&#123;<span class="number">5</span>,<span class="number">6</span>&#125;,&#123;<span class="number">7</span>,<span class="number">8</span>,<span class="number">9</span>,<span class="number">10</span>&#125;&#125;;</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> [] k:in1)&#123;</span><br><span class="line">  <span class="keyword">for</span>(<span class="keyword">int</span> l:k)&#123;</span><br><span class="line">      System.out.println(l);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li>while形式<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span> i=<span class="number">0</span>;</span><br><span class="line"><span class="keyword">while</span>(i&lt;in1.length)&#123;</span><br><span class="line">  <span class="keyword">int</span> j=<span class="number">0</span>;</span><br><span class="line">  <span class="keyword">while</span>(j&lt;in1[i].length)&#123;</span><br><span class="line">      System.out.println(in1[i][j]);</span><br><span class="line">      j++;</span><br><span class="line">  &#125;</span><br><span class="line">    i++;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li>do…while形式<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span> i=<span class="number">0</span>;</span><br><span class="line"><span class="keyword">do</span>&#123;</span><br><span class="line">  <span class="keyword">int</span> j=<span class="number">0</span>;</span><br><span class="line">  <span class="keyword">do</span>&#123;</span><br><span class="line">      System.out.println(in1[i][j]);</span><br><span class="line">      j++;</span><br><span class="line">  &#125;<span class="keyword">while</span>(j&lt;in1[i].length);</span><br><span class="line">    i++;</span><br><span class="line">&#125;<span class="keyword">while</span>(i&lt;in1.length);</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li>
+<h2 id="集合的遍历"><a class="markdownIt-Anchor" href="#集合的遍历"></a> 集合的遍历</h2>
+<ul>
+<li>
+<h3 id="list遍历"><a class="markdownIt-Anchor" href="#list遍历"></a> List遍历</h3>
+<ul>
+<li>第一种遍历方法<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> (String str : list) &#123;</span><br><span class="line">  System.out.println(str);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li>第二种遍历方法<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; list.size(); i++) &#123;</span><br><span class="line">    System.out.println(list.get(i));</span><br><span class="line">  &#125;</span><br><span class="line">  ``` </span><br><span class="line">* 第三种遍历方法</span><br><span class="line">  ```java</span><br><span class="line">  Iterator&lt;String&gt; iter = list.iterator();</span><br><span class="line">  <span class="keyword">while</span> (iter.hasNext()) &#123;</span><br><span class="line">      System.out.println(iter.next());</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li>
+<h3 id="map遍历"><a class="markdownIt-Anchor" href="#map遍历"></a> Map遍历</h3>
+<ul>
+<li>增强for循环<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span>(Obj o:c)&#123;</span><br><span class="line">  syso(o)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li>使用iterator ， Iterator it=c.iterator;<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">while</span>(it.hasNext())&#123;</span><br><span class="line">  Object o = it.next()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li>普通循环<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span>(Iterator it=c.iterator();it.hasNext();)&#123;</span><br><span class="line">  it.next() </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li>
+<h3 id="set遍历"><a class="markdownIt-Anchor" href="#set遍历"></a> Set遍历</h3>
+<ul>
+<li>迭代遍历<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Set&lt;String&gt; set = <span class="keyword">new</span> HashSet&lt;String&gt;();  </span><br><span class="line">Iterator&lt;String&gt; it = set.iterator();  </span><br><span class="line"><span class="keyword">while</span> (it.hasNext()) &#123;  </span><br><span class="line">  String str = it.next();  </span><br><span class="line">  System.out.println(str);  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li>for循环遍历<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Set&lt;String&gt; set = <span class="keyword">new</span> HashSet&lt;String&gt;();</span><br><span class="line"><span class="keyword">for</span> (String str : set) &#123;  </span><br><span class="line">  System.out.println(str);  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li>set.forEach循环遍历(java8 才支持)<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Set&lt;String&gt; set = <span class="keyword">new</span> HashSet&lt;String&gt;();</span><br><span class="line">set.forEach(item -&gt; &#123;</span><br><span class="line">    System.out.println(item);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+</li>
+<li>set.stream().forEach循环遍历(java8 才支持)<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Set&lt;String&gt; set = <span class="keyword">new</span> HashSet&lt;String&gt;();</span><br><span class="line">set.stream().forEach(item -&gt; &#123;</span><br><span class="line">    System.out.println(item);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h1 id="数组和集合的排序"><a class="markdownIt-Anchor" href="#数组和集合的排序"></a> 数组和集合的排序</h1>
+<h1 id="数组和集合的相互转换"><a class="markdownIt-Anchor" href="#数组和集合的相互转换"></a> 数组和集合的相互转换</h1>
+</div></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined" target="_blank" rel="noopener">Gadfly</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://blog.gadfly.pub/2019/11/23/cheng-xu-she-ji/java-shu-zu-he-ji-he-zhi-shi-yao-dian/">https://blog.gadfly.pub/2019/11/23/cheng-xu-she-ji/java-shu-zu-he-ji-he-zhi-shi-yao-dian/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://blog.gadfly.pub">牛虻的世界</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Java/">Java    </a><a class="post-meta__tags" href="/tags/Array/">Array    </a><a class="post-meta__tags" href="/tags/Map/">Map    </a><a class="post-meta__tags" href="/tags/List/">List    </a><a class="post-meta__tags" href="/tags/Set/">Set    </a></div><div class="post_share"><div class="social-share" data-image="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/css/share.min.css"><script src="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/js/social-share.min.js"></script></div></div><div class="post-reward"><a class="reward-button"><i class="fa fa-qrcode"></i> 打赏<div class="reward-main"><ul class="reward-all"><li class="reward-item"><img class="lazyload post-qr-code__img" src="/img/wechat.jpg"><div class="post-qr-code__desc">微信</div></li><li class="reward-item"><img class="lazyload post-qr-code__img" src="/img/alipay.jpg"><div class="post-qr-code__desc">支付寶</div></li></ul></div></a></div><nav class="pagination_post" id="pagination"><div class="prev-post pull_left"><a href="/2019/11/25/gong-ju-zi-liao/markdown-zhong-shu-xue-gong-shi-zheng-li/"><img class="prev_cover lazyload" data-src="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg.png" onerror="onerror=null;src='/img/404.jpg'"><div class="label">上一篇</div><div class="prev_info"><span>Markdown中数学公式整理</span></div></a></div><div class="next-post pull_right"><a href="/2019/11/11/cheng-xu-she-ji/springboot-bi-ji-ji-cheng-springsecurity-jwt-shi-xian-oauth2-de-shou-quan-ma-mo-shi/"><img class="next_cover lazyload" data-src="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg.png" onerror="onerror=null;src='/img/404.jpg'"><div class="label">下一篇</div><div class="next_info"><span>Spring Boot 笔记: 集成Spring Security + JWT实现Oauth2.0的授权码模式</span></div></a></div></nav><div class="relatedPosts"><div class="relatedPosts_headline"><i class="fa fa-fw fa-thumbs-up" aria-hidden="true"></i><span> 相关推荐</span></div><div class="relatedPosts_list"><div class="relatedPosts_item"><a href="/2019/12/09/cheng-xu-she-ji/mybatis-zhong-javatype-he-jdbctype-dui-ying-guan-xi/" title="Mybatis中javaType和jdbcType对应关系"><img class="relatedPosts_cover lazyload"data-src="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg.png"><div class="relatedPosts_title">Mybatis中javaType和jdbcType对应关系</div></a></div><div class="relatedPosts_item"><a href="/2019/12/09/cheng-xu-she-ji/mybatis-plus-zhong-zi-ding-yi-sql-yu-ju-de-shi-xian/" title="MyBatis-Plus中自定义SQL语句的实现"><img class="relatedPosts_cover lazyload"data-src="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg.png"><div class="relatedPosts_title">MyBatis-Plus中自定义SQL语句的实现</div></a></div><div class="relatedPosts_item"><a href="/2019/12/09/cheng-xu-she-ji/zai-springboot-xiang-mu-pu-tong-lei-zhong-zhu-ru-mapper-huo-service-jie-kou/" title="在SpringBoot项目普通类中注入mapper或service接口"><img class="relatedPosts_cover lazyload"data-src="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg.png"><div class="relatedPosts_title">在SpringBoot项目普通类中注入mapper或service接口</div></a></div><div class="relatedPosts_item"><a href="/2019/11/11/cheng-xu-she-ji/springboot-bi-ji-ji-cheng-springsecurity-jwt-shi-xian-oauth2-de-shou-quan-ma-mo-shi/" title="Spring Boot 笔记: 集成Spring Security + JWT实现Oauth2.0的授权码模式"><img class="relatedPosts_cover lazyload"data-src="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg.png"><div class="relatedPosts_title">Spring Boot 笔记: 集成Spring Security + JWT实现Oauth2.0的授权码模式</div></a></div><div class="relatedPosts_item"><a href="/2019/11/09/cheng-xu-she-ji/springboot-zhong-jiao-ni-shou-ba-shou-pei-zhi-https/" title="SpringBoot中教你手把手配置https"><img class="relatedPosts_cover lazyload"data-src="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg.png"><div class="relatedPosts_title">SpringBoot中教你手把手配置https</div></a></div><div class="relatedPosts_item"><a href="/2019/11/09/cheng-xu-she-ji/springboot2-chuang-jian-ding-shi-ren-wu/" title="SpringBoot2创建定时任务"><img class="relatedPosts_cover lazyload"data-src="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg.png"><div class="relatedPosts_title">SpringBoot2创建定时任务</div></a></div></div><div class="clear_both"></div></div><hr><div id="post-comment"><div class="comment_headling"><i class="fa fa-comments fa-fw" aria-hidden="true"></i><span> 评论</span></div><div id="lv-container" data-id="city" data-uid="MTAyMC80Nzc4NC8yNDI4MQ=="><script>(function(d, s) {
+    var j, e = d.getElementsByTagName(s)[0];
+    if (typeof LivereTower === 'function') { return; }
+    j = d.createElement(s);
+    j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+    j.async = true;
+    e.parentNode.insertBefore(j, e);
+})(document, 'script');</script></div></div></div></div><footer id="footer" style="background-image: url(https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg.png)"><div id="footer-wrap"><div class="copyright">&copy;2019 By Gadfly</div><div class="framework-info"><span>驱动 </span><a href="http://hexo.io" target="_blank" rel="noopener"><span>Hexo</span></a><span class="footer-separator">|</span><span>主题 </span><a href="https://github.com/jerryc127/hexo-theme-butterfly" target="_blank" rel="noopener"><span>Butterfly</span></a></div><div class="icp"><a href="http://www.beian.miit.gov.cn/state/outPortal/loginPortal.action" target="_blank" rel="noopener"><img class="icp-icon" src="/img/icp.png"><span>滇ICP备 19010936</span></a></div></div></footer></div><section class="rightside" id="rightside"><div id="rightside-config-hide"><i class="fa fa-book" id="readmode" title="阅读模式"></i><i class="fa fa-plus" id="font_plus" title="放大字体"></i><i class="fa fa-minus" id="font_minus" title="缩小字体"></i><a class="translate_chn_to_cht" id="translateLink" href="javascript:translatePage();" title="简繁转换" target="_self">繁</a><i class="darkmode fa fa-moon-o" id="darkmode" title="夜间模式"></i></div><div id="rightside-config-show"><div id="rightside_config" title="设置"><i class="fa fa-cog" aria-hidden="true"></i></div><a id="to_comment" href="#post-comment" title="直达评论"><i class="scroll_to_comment fa fa-comments">  </i></a><i class="fa fa-list-ul close" id="mobile-toc-button" title="目录" aria-hidden="true"></i><i class="fa fa-arrow-up" id="go-up" title="回到顶部" aria-hidden="true"></i></div></section><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/medium-zoom/dist/medium-zoom.min.js"></script><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css"><script src="https://cdn.jsdelivr.net/npm/katex-copytex@latest/dist/katex-copytex.min.js"></script><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex-copytex@latest/dist/katex-copytex.min.css"><script>$(function () {
+  $('span.katex-display').wrap('<div class="katex-wrap"></div>')
+})</script><script async src="/js/search/local-search.js"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar@0.1.15/dist/snackbar.min.js"></script><script id="canvas_nest" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="/js/third-party/canvas-nest.js"></script><script src="/js/baidupush.js"> </script><script src="/js/tw_cn.js"></script><script>translateInitilization()
+</script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page@latest/instantpage.min.js" type="module"></script><script src="https://cdn.jsdelivr.net/npm/lazysizes@latest/lazysizes.min.js" async=""></script><script src="/js/third-party/click_heart.js"></script><div class="search-dialog" id="local-search"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章"></div></div></div><hr><div id="local-search-results"><div id="local-hits"></div><div id="local-stats"><div class="local-search-stats__hr" id="hr"><span>由</span> <a href="https://github.com/wzpan/hexo-generator-search" target="_blank" rel="noopener" style="color:#49B1F5;">hexo-generator-search</a>
+ <span>提供支持</span></div></div></div><span class="search-close-button"><i class="fa fa-times"></i></span></div><div class="search-mask"></div></body></html>
