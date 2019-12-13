@@ -1,0 +1,1091 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><title>MySQL 的数据结构备份 | 牛虻的世界</title><meta name="description" content="MySQL 的数据结构备份"><meta name="keywords" content="MySQL"><meta name="author" content="Gadfly"><meta name="copyright" content="Gadfly"><meta name="format-detection" content="telephone=no"><link rel="shortcut icon" href="/img/favicon.ico"><link rel="preconnect" href="//cdn.jsdelivr.net"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="MySQL 的数据结构备份"><meta name="twitter:description" content="MySQL 的数据结构备份"><meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg.png"><meta property="og:type" content="article"><meta property="og:title" content="MySQL 的数据结构备份"><meta property="og:url" content="https://blog.gadfly.pub/2019/12/12/shu-ju-jie-gou/mysql-de-shu-ju-jie-gou-bei-fen/"><meta property="og:site_name" content="牛虻的世界"><meta property="og:description" content="MySQL 的数据结构备份"><meta property="og:image" content="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg.png"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><script src="https://cdn.jsdelivr.net/npm/js-cookie/dist/js.cookie.min.js"></script><script>const autoChangeMode = 'false'
+var t = Cookies.get("theme");
+if (autoChangeMode == '1'){
+const isDarkMode = window.matchMedia("(prefers-color-scheme: dark)").matches
+const isLightMode = window.matchMedia("(prefers-color-scheme: light)").matches
+const isNotSpecified = window.matchMedia("(prefers-color-scheme: no-preference)").matches
+const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+
+if (t === undefined){
+  if (isLightMode) activateLightMode()
+  else if (isDarkMode) activateDarkMode()
+  else if (isNotSpecified || hasNoSupport){
+    console.log('You specified no preference for a color scheme or your browser does not support it. I Schedule dark mode during night time.')
+    now = new Date();
+    hour = now.getHours();
+    isNight = hour < 6 || hour >= 18
+    isNight ? activateDarkMode() : activateLightMode()
+}
+} else if (t == 'light') activateLightMode()
+else activateDarkMode()
+
+
+} else if (autoChangeMode == '2'){
+  now = new Date();
+  hour = now.getHours();
+  isNight = hour < 6 || hour >= 18
+  if(t === undefined) isNight? activateDarkMode() : activateLightMode()
+  else if (t === 'light') activateLightMode()
+  else activateDarkMode() 
+} else {
+  if ( t == 'dark' ) activateDarkMode()
+  else if ( t == 'light') activateLightMode()
+}
+
+function activateDarkMode(){
+  document.documentElement.setAttribute('data-theme', 'dark')
+  if (document.querySelector('meta[name="theme-color"]') !== null){
+    document.querySelector('meta[name="theme-color"]').setAttribute('content','#000')
+  }
+}
+function activateLightMode(){
+  document.documentElement.setAttribute('data-theme', 'light')
+  if (document.querySelector('meta[name="theme-color"]') !== null){
+  document.querySelector('meta[name="theme-color"]').setAttribute('content','#fff')
+  }
+}</script><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@latest/css/font-awesome.min.css"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar@0.1.15/dist/snackbar.min.css"><link rel="canonical" href="https://blog.gadfly.pub/2019/12/12/shu-ju-jie-gou/mysql-de-shu-ju-jie-gou-bei-fen/"><link rel="prev" title="MySQL的运算符" href="https://blog.gadfly.pub/2019/12/12/shu-ju-jie-gou/mysql-de-yun-suan-fu/"><link rel="next" title="MySQL的流程控制语句" href="https://blog.gadfly.pub/2019/12/12/shu-ju-jie-gou/mysql-de-liu-cheng-kong-zhi-yu-ju/"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Titillium+Web"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容:${query}"}},
+  translate: {"defaultEncoding":2,"translateDelay":0,"cookieDomain":"https://xxx/","msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"简"},
+  highlight_copy: 'true',
+  highlight_lang: 'true',
+  highlight_shrink: 'false',
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  bookmark: {
+    title: 'Snackbar.bookmark.title',
+    message_prev: '按',
+    message_next: '键将本页加入书签'
+  },
+  runtime_unit: '天',
+  copyright: undefined,
+  copy_copyright_js: false,
+  ClickShowText: undefined,
+  medium_zoom: 'true',
+  Snackbar: {"bookmark":{"title":"Snackbar.bookmark.title","message_prev":"按","message_next":"键将本页加入书签"},"chs_to_cht":"你已切换为繁体","cht_to_chs":"你已切换为简体","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#49b1f5","bgDark":"#2d3035","position":"bottom-left"}
+  
+}</script></head><body><div id="header"> <div id="page-header"><span class="pull_left" id="blog_name"><a class="blog_title" id="site-name" href="/">牛虻的世界</a></span><i class="fa fa-bars fa-fw toggle-menu pull_right close" aria-hidden="true"></i><span class="pull_right menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 文章归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 文章标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fa fa-folder-open"></i><span> 文章分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fa fa-link"></i><span> 友情链接</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-heart"></i><span> 关于我</span></a></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> List</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/music/"><i class="fa-fw fa fa-music"></i><span> 我的音乐</span></a></li><li><a class="site-page" href="/movies/"><i class="fa-fw fa fa-film"></i><span> 我的电影</span></a></li><li><a class="site-page" href="/books/"><i class="fa-fw fa fa-book"></i><span> 我的书籍</span></a></li><li><a class="site-page" href="/games/"><i class="fa-fw fa fa-gamepad"></i><span> 我的游戏</span></a></li><li><a class="site-page" href="/gallery/"><i class="fa-fw fa fa-picture-o"></i><span> 我的相册</span></a></li></ul></div></div></span><span class="pull_right" id="search_button"><a class="site-page social-icon search"><i class="fa fa-search fa-fw"></i><span> 搜索</span></a></span></div></div><div id="mobile-sidebar"><div id="menu_mask"></div><div id="mobile-sidebar-menus"><div class="mobile_author_icon"><img class="lazyload avatar_img" src="https://api.btstu.cn/sjtx/api.php?lx=c3&amp;format=images" onerror="onerror=null;src='/img/friend_404.gif'"></div><div class="mobile_post_data"><div class="mobile_data_item is_center"><div class="mobile_data_link"><a href="/archives/"><div class="headline">文章</div><div class="length_num">40</div></a></div></div><div class="mobile_data_item is_center">      <div class="mobile_data_link"><a href="/tags/"><div class="headline">标签</div><div class="length_num">49</div></a></div></div><div class="mobile_data_item is_center">     <div class="mobile_data_link"><a href="/categories/"><div class="headline">分类</div><div class="length_num">19</div></a></div></div></div><hr><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 文章归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 文章标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fa fa-folder-open"></i><span> 文章分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fa fa-link"></i><span> 友情链接</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-heart"></i><span> 关于我</span></a></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> List</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/music/"><i class="fa-fw fa fa-music"></i><span> 我的音乐</span></a></li><li><a class="site-page" href="/movies/"><i class="fa-fw fa fa-film"></i><span> 我的电影</span></a></li><li><a class="site-page" href="/books/"><i class="fa-fw fa fa-book"></i><span> 我的书籍</span></a></li><li><a class="site-page" href="/games/"><i class="fa-fw fa fa-gamepad"></i><span> 我的游戏</span></a></li><li><a class="site-page" href="/gallery/"><i class="fa-fw fa fa-picture-o"></i><span> 我的相册</span></a></li></ul></div></div></div><div id="mobile-sidebar-toc"><div class="toc_mobile_headline">目录</div><ol class="toc_mobile_items"><li class="toc_mobile_items-item toc_mobile_items-level-3"><a class="toc_mobile_items-link" href="#一-在-mysql-5711-以下时使用-mysqldump-进行备份"><span class="toc_mobile_items-text"> 一、在 MySQL-5.7.11 以下时使用 mysqldump 进行备份</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-3"><a class="toc_mobile_items-link" href="#二-在-mysql-5711-及以上版本时使用-mysqlpump-进行备份"><span class="toc_mobile_items-text"> 二、在 MySQL-5.7.11 及以上版本时使用 mysqlpump 进行备份</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-3"><a class="toc_mobile_items-link" href="#三-备份列子"><span class="toc_mobile_items-text"> 三、备份列子</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-3"><a class="toc_mobile_items-link" href="#四-恢复"><span class="toc_mobile_items-text"> 四、恢复</span></a></li></ol></div></div><div id="body-wrap"><div id="web_bg" data-type="photo"></div><i class="fa fa-arrow-right" id="toggle-sidebar" aria-hidden="true">     </i><div class="auto_open" id="sidebar"><div class="sidebar-toc"><div class="sidebar-toc__title">目录</div><div class="sidebar-toc__progress"><span class="progress-notice">你已经读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar">     </div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#一-在-mysql-5711-以下时使用-mysqldump-进行备份"><span class="toc-text"> 一、在 MySQL-5.7.11 以下时使用 mysqldump 进行备份</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二-在-mysql-5711-及以上版本时使用-mysqlpump-进行备份"><span class="toc-text"> 二、在 MySQL-5.7.11 及以上版本时使用 mysqlpump 进行备份</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#三-备份列子"><span class="toc-text"> 三、备份列子</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#四-恢复"><span class="toc-text"> 四、恢复</span></a></li></ol></div></div></div><div id="content-outer"><div id="top-container" style="background-image: url(https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg.png)"><div id="post-info"><div id="post-title"><div class="posttitle">MySQL 的数据结构备份</div></div><div id="post-meta"><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 发表于 2019-12-12<span class="post-meta__separator">|</span><i class="fa fa-history" aria-hidden="true"></i> 更新于 2019-12-12</time><span class="post-meta__separator mobile_hidden">|</span><span class="mobile_hidden"><i class="fa fa-inbox post-meta__icon" aria-hidden="true"></i><a class="post-meta__categories" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">数据结构</a><i class="fa fa-angle-right" aria-hidden="true"></i><i class="fa fa-inbox post-meta__icon" aria-hidden="true"></i><a class="post-meta__categories" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/MySQL/">MySQL</a></span><div class="post-meta-wordcount"><i class="fa fa-file-word-o post-meta__icon" aria-hidden="true"></i><span>字数总计: </span><span class="word-count">4.2k</span><span class="post-meta__separator">|</span><i class="fa fa-clock-o post-meta__icon" aria-hidden="true"></i><span>阅读时长: 18 分钟</span><span class="post-meta__separator">|</span><i class="fa fa-eye post-meta__icon" aria-hidden="true">       </i><span>阅读量: </span><span id="busuanzi_value_page_pv"></span></div></div></div></div><div class="layout layout_post" id="content-inner">   <article id="post"><div class="article-container" id="post-content"><h3 id="一-在-mysql-5711-以下时使用-mysqldump-进行备份"><a class="markdownIt-Anchor" href="#一-在-mysql-5711-以下时使用-mysqldump-进行备份"></a> 一、在 <code>MySQL-5.7.11</code> 以下时使用 <code>mysqldump</code> 进行备份</h3>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>说明</th>
+<th>简写</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>–add-drop-database</td>
+<td>在建立库之前先执行删库操作</td>
+<td></td>
+</tr>
+<tr>
+<td>–add-drop-table</td>
+<td>在建表之前先执行删表操作</td>
+<td></td>
+</tr>
+<tr>
+<td>–add-drop-trigger</td>
+<td>在建触发器之前先执行删触发器操作</td>
+<td></td>
+</tr>
+<tr>
+<td>–add-locks</td>
+<td>备份表时，使用LOCK TABLES和UNLOCK TABLES。注意：这个参数不支持并行备份，需要关闭并行备份功能：–default-parallelism=0</td>
+<td></td>
+</tr>
+<tr>
+<td>–all-databases</td>
+<td>备份所有库</td>
+<td>-A</td>
+</tr>
+<tr>
+<td>–allow-keywords</td>
+<td>Allow creation of column names that are keywords</td>
+<td></td>
+</tr>
+<tr>
+<td>–apply-slave-statements</td>
+<td>Include STOP SLAVE prior to CHANGE MASTER statement and START SLAVE at end of output</td>
+<td></td>
+</tr>
+<tr>
+<td>–bind-address</td>
+<td>指定通过哪个网络接口来连接Mysql服务器（一台服务器可能有多个IP），防止同一个网卡出去影响业务。</td>
+<td></td>
+</tr>
+<tr>
+<td>–character-sets-dir</td>
+<td>Directory where character sets are installed</td>
+<td></td>
+</tr>
+<tr>
+<td>–comments</td>
+<td>Add comments to dump file</td>
+<td></td>
+</tr>
+<tr>
+<td>–compact</td>
+<td>Produce more compact output</td>
+<td></td>
+</tr>
+<tr>
+<td>–compatible</td>
+<td>它告诉 mysqldump，导出的数据将和哪种数据库或哪个旧版本的 MySQL 服务器相兼容。值可以为 ansi、mysql323、mysql40、postgresql、oracle、mssql、db2、maxdb、no_key_options、no_tables_options、no_field_options 等，要使用几个值，用逗号将它们隔开。当然了，它并不保证能完全兼容，而是尽量兼容。</td>
+<td></td>
+</tr>
+<tr>
+<td>–complete-insert</td>
+<td>导出的数据采用包含字段名的完整 INSERT 方式，也就是把所有的值都写在一行。这么做能提高插入效率，但是可能会受到 max_allowed_packet 参数的影响而导致插入失败。因此，需要谨慎使用该参数，至少我不推荐。</td>
+<td></td>
+</tr>
+<tr>
+<td>–compress</td>
+<td>压缩客户端和服务器传输的所有的数据</td>
+<td>-C</td>
+</tr>
+<tr>
+<td>–create-options</td>
+<td>Include all MySQL-specific table options in CREATE TABLE statements</td>
+<td></td>
+</tr>
+<tr>
+<td>–databases</td>
+<td>手动指定要备份的库，支持多个数据库，用空格分隔</td>
+<td>-B</td>
+</tr>
+<tr>
+<td>–debug</td>
+<td>Write debugging log</td>
+<td></td>
+</tr>
+<tr>
+<td>–debug-check</td>
+<td>Print debugging information when program exits</td>
+<td></td>
+</tr>
+<tr>
+<td>–debug-info</td>
+<td>Print debugging information, memory, and CPU statistics when program exits</td>
+<td></td>
+</tr>
+<tr>
+<td>–default-auth</td>
+<td>Authentication plugin to use</td>
+<td></td>
+</tr>
+<tr>
+<td>–default-character-set</td>
+<td>指定备份的字符集。</td>
+<td></td>
+</tr>
+<tr>
+<td>–defaults-extra-file</td>
+<td>Read named option file in addition to usual option files</td>
+<td></td>
+</tr>
+<tr>
+<td>–defaults-file</td>
+<td>Read only named option file</td>
+<td></td>
+</tr>
+<tr>
+<td>–defaults-group-suffix</td>
+<td>Option group suffix value</td>
+<td></td>
+</tr>
+<tr>
+<td>–delete-master-logs</td>
+<td>On a master replication server, delete the binary logs after performing the dump operation</td>
+<td></td>
+</tr>
+<tr>
+<td>–disable-keys</td>
+<td>告诉 mysqldump 在 INSERT 语句的开头和结尾增加 /*!40000 ALTER TABLE table DISABLE KEYS <em>/; 和 /</em>!40000 ALTER TABLE table ENABLE KEYS */; 语句，这能大大提高插入语句的速度，因为它是在插入完所有数据后才重建索引的。该选项只适合 MyISAM 表。</td>
+<td></td>
+</tr>
+<tr>
+<td>–dump-date</td>
+<td>Include dump date as “Dump completed on” comment if --comments is given</td>
+<td></td>
+</tr>
+<tr>
+<td>–dump-slave</td>
+<td>Include CHANGE MASTER statement that lists binary log coordinates of slave’s master</td>
+<td></td>
+</tr>
+<tr>
+<td>–enable-cleartext-plugin</td>
+<td>Enable cleartext authentication plugin	5.7.10</td>
+<td></td>
+</tr>
+<tr>
+<td>–events</td>
+<td>Dump events from dumped databases</td>
+<td></td>
+</tr>
+<tr>
+<td>–extended-insert</td>
+<td>默认情况下，mysqldump 开启 --complete-insert 模式，因此不想用它的的话，就使用本选项，设定它的值为 false 即可。</td>
+<td></td>
+</tr>
+<tr>
+<td>–fields-enclosed-by</td>
+<td>This option is used with the --tab option and has the same meaning as the corresponding clause for LOAD DATA INFILE</td>
+<td></td>
+</tr>
+<tr>
+<td>–fields-escaped-by</td>
+<td>This option is used with the --tab option and has the same meaning as the corresponding clause for LOAD DATA INFILE</td>
+<td></td>
+</tr>
+<tr>
+<td>–fields-optionally-enclosed-by</td>
+<td>This option is used with the --tab option and has the same meaning as the corresponding clause for LOAD DATA INFILE</td>
+<td></td>
+</tr>
+<tr>
+<td>–fields-terminated-by</td>
+<td>This option is used with the --tab option and has the same meaning as the corresponding clause for LOAD DATA INFILE</td>
+<td></td>
+</tr>
+<tr>
+<td>–flush-logs</td>
+<td>Flush MySQL server log files before starting dump</td>
+<td></td>
+</tr>
+<tr>
+<td>–flush-privileges</td>
+<td>Emit a FLUSH PRIVILEGES statement after dumping mysql database</td>
+<td></td>
+</tr>
+<tr>
+<td>–force</td>
+<td>Continue even if an SQL error occurs during a table dump</td>
+<td></td>
+</tr>
+<tr>
+<td>–help</td>
+<td>Display help message and exit</td>
+<td></td>
+</tr>
+<tr>
+<td>–hex-blob</td>
+<td>使用十六进制格式导出二进制字符串字段。如果有二进制数据就必须使用本选项。影响到的字段类型有 BINARY、VARBINARY、BLOB。</td>
+<td></td>
+</tr>
+<tr>
+<td>–host</td>
+<td>Host to connect to (IP address or hostname)</td>
+<td></td>
+</tr>
+<tr>
+<td>–ignore-error</td>
+<td>Ignore specified errors	5.7.1</td>
+<td></td>
+</tr>
+<tr>
+<td>–ignore-table</td>
+<td>Do not dump given table</td>
+<td></td>
+</tr>
+<tr>
+<td>–include-master-host-port</td>
+<td>Include MASTER_HOST/MASTER_PORT options in CHANGE MASTER statement produced with --dump-slave</td>
+<td></td>
+</tr>
+<tr>
+<td>–insert-ignore</td>
+<td>Write INSERT IGNORE rather than INSERT statements</td>
+<td></td>
+</tr>
+<tr>
+<td>–lines-terminated-by</td>
+<td>This option is used with the --tab option and has the same meaning as the corresponding clause for LOAD DATA INFILE</td>
+<td></td>
+</tr>
+<tr>
+<td>–lock-all-tables</td>
+<td>在开始导出之前，提交请求锁定所有数据库中的所有表，以保证数据的一致性。这是一个全局读锁，并且自动关闭 --single-transaction 和 --lock-tables 选项。</td>
+<td>-x</td>
+</tr>
+<tr>
+<td>–lock-tables</td>
+<td>它和 --lock-all-tables 类似，不过是锁定当前导出的数据表，而不是一下子锁定全部库下的表。本选项只适用于 MyISAM 表，如果是 Innodb 表可以用 --single-transaction 选项。</td>
+<td></td>
+</tr>
+<tr>
+<td>–log-error</td>
+<td>Append warnings and errors to named file</td>
+<td></td>
+</tr>
+<tr>
+<td>–login-path</td>
+<td>Read login path options from .mylogin.cnf</td>
+<td></td>
+</tr>
+<tr>
+<td>–master-data</td>
+<td>Write the binary log file name and position to the output</td>
+<td></td>
+</tr>
+<tr>
+<td>–max_allowed_packet</td>
+<td>Maximum packet length to send to or receive from server</td>
+<td></td>
+</tr>
+<tr>
+<td>–net_buffer_length</td>
+<td>Buffer size for TCP/IP and socket communication</td>
+<td></td>
+</tr>
+<tr>
+<td>–no-autocommit</td>
+<td>Enclose the INSERT statements for each dumped table within SET autocommit = 0 and COMMIT statements</td>
+<td></td>
+</tr>
+<tr>
+<td>–no-create-db</td>
+<td>Do not write CREATE DATABASE statements</td>
+<td></td>
+</tr>
+<tr>
+<td>–no-create-info</td>
+<td>只导出数据，而不添加 CREATE TABLE 语句。</td>
+<td>-t</td>
+</tr>
+<tr>
+<td>–no-data</td>
+<td>不导出任何数据，只导出数据库表结构。</td>
+<td>-d</td>
+</tr>
+<tr>
+<td>–no-defaults</td>
+<td>Read no option files</td>
+<td></td>
+</tr>
+<tr>
+<td>–no-set-names</td>
+<td>Same as --skip-set-charset</td>
+<td></td>
+</tr>
+<tr>
+<td>–no-tablespaces</td>
+<td>Do not write any CREATE LOGFILE GROUP or CREATE TABLESPACE statements in output</td>
+<td></td>
+</tr>
+<tr>
+<td>–opt</td>
+<td>这只是一个快捷选项，等同于同时添加 --add-drop-tables --add-locking --create-option --disable-keys --extended-insert --lock-tables --quick --set-charset 选项。本选项能让 mysqldump 很快的导出数据，并且导出的数据能很快导回。该选项默认开启，但可以用 --skip-opt 禁用。注意，如果运行 mysqldump 没有指定 --quick 或 --opt 选项，则会将整个结果集放在内存中。如果导出大数据库的话可能会出现问题。</td>
+<td></td>
+</tr>
+<tr>
+<td>–order-by-primary</td>
+<td>Dump each table’s rows sorted by its primary key, or by its first unique index</td>
+<td></td>
+</tr>
+<tr>
+<td>–password</td>
+<td>备份需要的密码</td>
+<td>-p</td>
+</tr>
+<tr>
+<td>–pipe</td>
+<td>On Windows, connect to server using named pipe</td>
+<td></td>
+</tr>
+<tr>
+<td>–plugin-dir</td>
+<td>Directory where plugins are installed</td>
+<td></td>
+</tr>
+<tr>
+<td>–port</td>
+<td>备份数据库的TCP/IP端口</td>
+<td></td>
+</tr>
+<tr>
+<td>–print-defaults</td>
+<td>Print default options</td>
+<td></td>
+</tr>
+<tr>
+<td>–protocol</td>
+<td>指定连接服务器的协议	{TCP/SOCKET/PIPE/MEMORY}</td>
+<td></td>
+</tr>
+<tr>
+<td>–quick</td>
+<td>该选项在导出大表时很有用，它强制 mysqldump 从服务器查询取得记录直接输出而不是取得所有记录后将它们缓存到内存中。</td>
+<td>-q</td>
+</tr>
+<tr>
+<td>–quote-names</td>
+<td>Quote identifiers within backtick characters</td>
+<td></td>
+</tr>
+<tr>
+<td>–replace</td>
+<td>Write REPLACE statements rather than INSERT statements</td>
+<td></td>
+</tr>
+<tr>
+<td>–result-file</td>
+<td>Direct output to a given file</td>
+<td></td>
+</tr>
+<tr>
+<td>–routines</td>
+<td>导出存储过程以及自定义函数。</td>
+<td>-R</td>
+</tr>
+<tr>
+<td>–secure-auth</td>
+<td>Do not send passwords to server in old (pre-4.1) format	5.7.4	5.7.5</td>
+<td></td>
+</tr>
+<tr>
+<td>–set-charset</td>
+<td>Add SET NAMES default_character_set to output</td>
+<td></td>
+</tr>
+<tr>
+<td>–set-gtid-purged</td>
+<td>Whether to add SET @@GLOBAL.GTID_PURGED to output</td>
+<td></td>
+</tr>
+<tr>
+<td>–shared-memory-base-name</td>
+<td>The name of shared memory to use for shared-memory connections</td>
+<td></td>
+</tr>
+<tr>
+<td>–single-transaction</td>
+<td>该选项在导出数据之前提交一个 BEGIN SQL语句，BEGIN 不会阻塞任何应用程序且能保证导出时数据库的一致性状态。它只适用于事务表，例如 InnoDB 和 BDB。本选项和 --lock-tables 选项是互斥的，因为 LOCK TABLES 会使任何挂起的事务隐含提交。要想导出大表的话，应结合使用 --quick 选项。</td>
+<td></td>
+</tr>
+<tr>
+<td>–skip-add-drop-table</td>
+<td>Do not add a DROP TABLE statement before each CREATE TABLE statement</td>
+<td></td>
+</tr>
+<tr>
+<td>–skip-add-locks</td>
+<td>Do not add locks</td>
+<td></td>
+</tr>
+<tr>
+<td>–skip-comments</td>
+<td>Do not add comments to dump file</td>
+<td></td>
+</tr>
+<tr>
+<td>–skip-compact</td>
+<td>Do not produce more compact output</td>
+<td></td>
+</tr>
+<tr>
+<td>–skip-disable-keys</td>
+<td>Do not disable keys</td>
+<td></td>
+</tr>
+<tr>
+<td>–skip-extended-insert</td>
+<td>Turn off extended-insert</td>
+<td></td>
+</tr>
+<tr>
+<td>–skip-opt</td>
+<td>Turn off options set by --opt</td>
+<td></td>
+</tr>
+<tr>
+<td>–skip-quick</td>
+<td>Do not retrieve rows for a table from the server a row at a time</td>
+<td></td>
+</tr>
+<tr>
+<td>–skip-quote-names</td>
+<td>Do not quote identifiers</td>
+<td></td>
+</tr>
+<tr>
+<td>–skip-set-charset</td>
+<td>Do not write SET NAMES statement</td>
+<td></td>
+</tr>
+<tr>
+<td>–skip-triggers</td>
+<td>Do not dump triggers</td>
+<td></td>
+</tr>
+<tr>
+<td>–skip-tz-utc</td>
+<td>Turn off tz-utc</td>
+<td></td>
+</tr>
+<tr>
+<td>–socket</td>
+<td>For connections to localhost, the Unix socket file to use</td>
+<td></td>
+</tr>
+<tr>
+<td>–ssl</td>
+<td>Enable encrypted connection</td>
+<td></td>
+</tr>
+<tr>
+<td>–ssl-ca</td>
+<td>File that contains list of trusted SSL Certificate Authorities</td>
+<td></td>
+</tr>
+<tr>
+<td>–ssl-capath</td>
+<td>Directory that contains trusted SSL Certificate Authority certificate files</td>
+<td></td>
+</tr>
+<tr>
+<td>–ssl-cert</td>
+<td>File that contains X509 certificate</td>
+<td></td>
+</tr>
+<tr>
+<td>–ssl-cipher</td>
+<td>List of permitted ciphers for connection encryption</td>
+<td></td>
+</tr>
+<tr>
+<td>–ssl-crl</td>
+<td>File that contains certificate revocation lists</td>
+<td></td>
+</tr>
+<tr>
+<td>–ssl-crlpath</td>
+<td>Directory that contains certificate revocation list files</td>
+<td></td>
+</tr>
+<tr>
+<td>–ssl-key</td>
+<td>File that contains X509 key</td>
+<td></td>
+</tr>
+<tr>
+<td>–ssl-mode</td>
+<td>Security state of connection to server	5.7.11</td>
+<td></td>
+</tr>
+<tr>
+<td>–ssl-verify-server-cert</td>
+<td>Verify host name against server certificate Common Name identity</td>
+<td></td>
+</tr>
+<tr>
+<td>–tab</td>
+<td>Produce tab-separated data files</td>
+<td></td>
+</tr>
+<tr>
+<td>–tables</td>
+<td>指定备份的表，多个用逗号分隔</td>
+<td></td>
+</tr>
+<tr>
+<td>–tls-version</td>
+<td>Protocols permitted for encrypted connections	5.7.10</td>
+<td></td>
+</tr>
+<tr>
+<td>–triggers</td>
+<td>同时导出触发器。该选项默认启用，用 --skip-triggers 禁用它。</td>
+<td></td>
+</tr>
+<tr>
+<td>–tz-utc</td>
+<td>Add SET TIME_ZONE=’+00:00’ to dump file</td>
+<td></td>
+</tr>
+<tr>
+<td>–user</td>
+<td>MySQL user name to use when connecting to server</td>
+<td></td>
+</tr>
+<tr>
+<td>–verbose</td>
+<td>Verbose mode</td>
+<td></td>
+</tr>
+<tr>
+<td>–version</td>
+<td>Display version information and exit</td>
+<td></td>
+</tr>
+<tr>
+<td>–where</td>
+<td>Dump only rows selected by given WHERE condition</td>
+<td></td>
+</tr>
+<tr>
+<td>–xml</td>
+<td>Produce XML output</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="二-在-mysql-5711-及以上版本时使用-mysqlpump-进行备份"><a class="markdownIt-Anchor" href="#二-在-mysql-5711-及以上版本时使用-mysqlpump-进行备份"></a> 二、在 <code>MySQL-5.7.11</code> 及以上版本时使用 <code>mysqlpump</code> 进行备份</h3>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>说明</th>
+<th>简写</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>–add-drop-database</td>
+<td>在建立库之前先执行删库操作。</td>
+<td></td>
+</tr>
+<tr>
+<td>–add-drop-table</td>
+<td>在建表之前先执行删表操作。</td>
+<td></td>
+</tr>
+<tr>
+<td>–add-drop-user</td>
+<td>在CREATE USER语句之前增加DROP USER，注意：这个参数需要和–users一起使用，否者不生效。</td>
+<td></td>
+</tr>
+<tr>
+<td>–add-locks</td>
+<td>备份表时，使用LOCK TABLES和UNLOCK TABLES。注意：这个参数不支持并行备份，需要关闭并行备份功能：–default-parallelism=0</td>
+<td></td>
+</tr>
+<tr>
+<td>–all-databases</td>
+<td>备份所有库</td>
+<td>-A</td>
+</tr>
+<tr>
+<td>–bind-address</td>
+<td>指定通过哪个网络接口来连接Mysql服务器（一台服务器可能有多个IP），防止同一个网卡出去影响业务。</td>
+<td></td>
+</tr>
+<tr>
+<td>–character-sets-dir</td>
+<td>Directory where character sets are installed</td>
+<td></td>
+</tr>
+<tr>
+<td>–complete-insert</td>
+<td>dump出包含所有列的完整insert语句。</td>
+<td></td>
+</tr>
+<tr>
+<td>–compress</td>
+<td>压缩客户端和服务器传输的所有的数据</td>
+<td>-C</td>
+</tr>
+<tr>
+<td>–compress-output</td>
+<td>默认不压缩输出，目前可以使用的压缩算法有LZ4和ZLIB。</td>
+<td></td>
+</tr>
+<tr>
+<td>–databases</td>
+<td>手动指定要备份的库，支持多个数据库，用空格分隔</td>
+<td>-B</td>
+</tr>
+<tr>
+<td>–debug	Write</td>
+<td>debugging log</td>
+<td></td>
+</tr>
+<tr>
+<td>–debug-check</td>
+<td>Print debugging information when program exits</td>
+<td></td>
+</tr>
+<tr>
+<td>–debug-info</td>
+<td>Print debugging information, memory, and CPU statistics when program exits</td>
+<td></td>
+</tr>
+<tr>
+<td>–default-auth</td>
+<td>Authentication plugin to use</td>
+<td></td>
+</tr>
+<tr>
+<td>–default-character-set</td>
+<td>指定备份的字符集</td>
+<td></td>
+</tr>
+<tr>
+<td>–default-parallelism</td>
+<td>指定并行线程数，默认是2，如果设置成0，表示不使用并行备份。注意：每个线程的备份步骤是：先create table但不建立二级索引（主键会在create table时候建立），再写入数据，最后建立二级索引。</td>
+<td></td>
+</tr>
+<tr>
+<td>–defaults-extra-file</td>
+<td>Read named option file in addition to usual option files</td>
+<td></td>
+</tr>
+<tr>
+<td>–defaults-file</td>
+<td>Read only named option file</td>
+<td></td>
+</tr>
+<tr>
+<td>–defaults-group-suffix</td>
+<td>Option group suffix value</td>
+<td></td>
+</tr>
+<tr>
+<td>–defer-table-indexes</td>
+<td>延迟创建索引，直到所有数据都加载完之后，再创建索引，默认开启。若关闭则会和mysqldump一样：先创建一个表和所有索引，再导入数据，因为在加载还原数据的时候要维护二级索引的开销，导致效率比较低。关闭使用参数：–skip–defer-table-indexes。</td>
+<td></td>
+</tr>
+<tr>
+<td>–events</td>
+<td>备份数据库的事件，默认开启，关闭使用–skip-events参数。</td>
+<td></td>
+</tr>
+<tr>
+<td>–exclude-databases</td>
+<td>备份排除该参数指定的数据库，多个用逗号分隔</td>
+<td></td>
+</tr>
+<tr>
+<td>–exclude-events</td>
+<td>备份排除该参数指定的事件，多个用逗号分隔</td>
+<td></td>
+</tr>
+<tr>
+<td>–exclude-routines</td>
+<td>备份排除该参数指定的自定义函数和存储过程，多个用逗号分隔</td>
+<td></td>
+</tr>
+<tr>
+<td>–exclude-tables</td>
+<td>备份排除该参数指定的表，多个用逗号分隔</td>
+<td></td>
+</tr>
+<tr>
+<td>–exclude-triggers</td>
+<td>备份排除该参数指定的触发器，多个用逗号分隔</td>
+<td></td>
+</tr>
+<tr>
+<td>–exclude-users</td>
+<td>备份排除该参数指定的用户，多个用逗号分隔</td>
+<td></td>
+</tr>
+<tr>
+<td>–extended-insert</td>
+<td>Use multiple-row INSERT syntax</td>
+<td></td>
+</tr>
+<tr>
+<td>–help</td>
+<td>Display help message and exit</td>
+<td></td>
+</tr>
+<tr>
+<td>–hex-blob</td>
+<td>Dump binary columns using hexadecimal notation</td>
+<td></td>
+</tr>
+<tr>
+<td>–host</td>
+<td>Host to connect to (IP address or hostname)</td>
+<td></td>
+</tr>
+<tr>
+<td>–include-databases</td>
+<td>指定备份数据库，多个用逗号分隔</td>
+<td></td>
+</tr>
+<tr>
+<td>–include-events</td>
+<td>指定备份的事件，多个用逗号分隔</td>
+<td></td>
+</tr>
+<tr>
+<td>–include-routines</td>
+<td>指定备份的自定义函数和存储过程，多个用逗号分隔</td>
+<td></td>
+</tr>
+<tr>
+<td>–include-tables</td>
+<td>指定备份的表，多个用逗号分隔</td>
+<td></td>
+</tr>
+<tr>
+<td>–include-triggers</td>
+<td>指定备份的触发器，多个用逗号分隔</td>
+<td></td>
+</tr>
+<tr>
+<td>–include-users</td>
+<td>指定备份的用户，多个用逗号分隔</td>
+<td></td>
+</tr>
+<tr>
+<td>–insert-ignore</td>
+<td>备份用insert ignore语句代替insert语句。</td>
+<td></td>
+</tr>
+<tr>
+<td>–log-error-file</td>
+<td>备份出现的warnings和erros信息输出到一个指定的文件</td>
+<td></td>
+</tr>
+<tr>
+<td>–login-path</td>
+<td>Read login path options from .mylogin.cnf</td>
+<td></td>
+</tr>
+<tr>
+<td>–max-allowed-packet</td>
+<td>备份时用于client/server直接通信的最大buffer包的大小</td>
+<td></td>
+</tr>
+<tr>
+<td>–net-buffer-length</td>
+<td>Buffer size for TCP/IP and socket communication</td>
+<td></td>
+</tr>
+<tr>
+<td>–no-create-db</td>
+<td>Do not write CREATE DATABASE statements</td>
+<td></td>
+</tr>
+<tr>
+<td>–no-create-info</td>
+<td>Do not write CREATE TABLE statements that re-create each dumped table</td>
+<td></td>
+</tr>
+<tr>
+<td>–no-defaults</td>
+<td>Read no option files</td>
+<td></td>
+</tr>
+<tr>
+<td>–parallel-schemas</td>
+<td>Specify schema-processing parallelism</td>
+<td></td>
+</tr>
+<tr>
+<td>–password</td>
+<td>备份需要的密码</td>
+<td>-p</td>
+</tr>
+<tr>
+<td>–plugin-dir</td>
+<td>Directory where plugins are installed</td>
+<td></td>
+</tr>
+<tr>
+<td>–port</td>
+<td>备份数据库的TCP/IP端口</td>
+<td></td>
+</tr>
+<tr>
+<td>–print-defaults</td>
+<td>Print default options</td>
+<td></td>
+</tr>
+<tr>
+<td>–protocol</td>
+<td>指定连接服务器的协议	{TCP/SOCKET/PIPE/MEMORY}</td>
+<td></td>
+</tr>
+<tr>
+<td>–replace</td>
+<td>备份出来replace into语句</td>
+<td></td>
+</tr>
+<tr>
+<td>–result-file</td>
+<td>Direct output to a given file</td>
+<td></td>
+</tr>
+<tr>
+<td>–routines</td>
+<td>备份出来包含存储过程和函数，默认开启，需要对 mysql.proc表有查看权限。生成的文件中会包含CREATE PROCEDURE 和 CREATE FUNCTION语句以用于恢复，关闭则需要用–skip-routines参数。</td>
+<td></td>
+</tr>
+<tr>
+<td>–secure-auth</td>
+<td>Do not send passwords to server in old (pre-4.1) format</td>
+<td></td>
+</tr>
+<tr>
+<td>–set-charset</td>
+<td>备份文件里写SET NAMES default_character_set 到输出，此参默认开启。 – skip-set-charset禁用此参数，不会在备份文件里面写出set names…</td>
+<td></td>
+</tr>
+<tr>
+<td>–set-gtid-purged</td>
+<td>Whether to add SET @@GLOBAL.GTID_PURGED to output	5.7.18</td>
+<td></td>
+</tr>
+<tr>
+<td>–single-transaction</td>
+<td>该参数在事务隔离级别设置成Repeatable Read，并在dump之前发送start transaction 语句给服务端。这在使用innodb时很有用，因为在发出start transaction时，保证了在不阻塞任何应用下的一致性状态。对myisam和memory等非事务表，还是会改变状态的，当使用此参的时候要确保没有其他连接在使用ALTER TABLE、CREATE TABLE、DROP TABLE、RENAME TABLE、TRUNCATE TABLE等语句，否则会出现不正确的内容或则失败。–add-locks和此参互斥，在mysql5.7.11之前，–default-parallelism大于1的时候和此参也互斥，必须使用–default-parallelism=0。5.7.11之后解决了–single-transaction和–default-parallelism的互斥问题。</td>
+<td></td>
+</tr>
+<tr>
+<td>–skip-definer</td>
+<td>忽略那些创建视图和存储过程用到的 DEFINER 和 SQL SECURITY 语句，恢复的时候，会使用默认值，否则会在还原的时候看到没有DEFINER定义时的账号而报错。</td>
+<td></td>
+</tr>
+<tr>
+<td>–skip-dump-rows</td>
+<td>只备份表结构，不备份数据。注意：mysqldump支持–no-data，mysqlpump不支持–no-data</td>
+<td>-d</td>
+</tr>
+<tr>
+<td>–socket</td>
+<td>对于连接到localhost，Unix使用套接字文件，在Windows上是命名管道的名称使用</td>
+<td>-S</td>
+</tr>
+<tr>
+<td>–ssl</td>
+<td>Enable encrypted connection</td>
+<td></td>
+</tr>
+<tr>
+<td>–ssl-ca</td>
+<td>File that contains list of trusted SSL Certificate Authorities</td>
+<td></td>
+</tr>
+<tr>
+<td>–ssl-capath</td>
+<td>Directory that contains trusted SSL Certificate Authority certificate files</td>
+<td></td>
+</tr>
+<tr>
+<td>–ssl-cert</td>
+<td>File that contains X509 certificate</td>
+<td></td>
+</tr>
+<tr>
+<td>–ssl-cipher</td>
+<td>List of permitted ciphers for connection encryption</td>
+<td></td>
+</tr>
+<tr>
+<td>–ssl-crl</td>
+<td>File that contains certificate revocation lists</td>
+<td></td>
+</tr>
+<tr>
+<td>–ssl-crlpath</td>
+<td>Directory that contains certificate revocation list files</td>
+<td></td>
+</tr>
+<tr>
+<td>–ssl-key</td>
+<td>File that contains X509 key</td>
+<td></td>
+</tr>
+<tr>
+<td>–ssl-mode</td>
+<td>Security state of connection to server	5.7.11</td>
+<td></td>
+</tr>
+<tr>
+<td>–ssl-verify-server-cert</td>
+<td>Verify host name against server certificate Common Name identity</td>
+<td></td>
+</tr>
+<tr>
+<td>–tls-version</td>
+<td>Protocols permitted for encrypted connections	5.7.10</td>
+<td></td>
+</tr>
+<tr>
+<td>–triggers</td>
+<td>备份出来包含触发器，默认开启，使用–skip-triggers来关闭。</td>
+<td></td>
+</tr>
+<tr>
+<td>–tz-utc</td>
+<td>备份时会在备份文件的最前几行添加SET TIME_ZONE=’+00:00’。注意：如果还原的服务器不在同一个时区并且还原表中的列有timestamp字段，会导致还原出来的结果不一致。默认开启该参数，用 --skip-tz-utc来关闭参数。</td>
+<td></td>
+</tr>
+<tr>
+<td>–user</td>
+<td>备份时候的用户名</td>
+<td>-u</td>
+</tr>
+<tr>
+<td>–users</td>
+<td>备份数据库用户，备份的形式是CREATE USER…，GRANT…，只备份数据库账号可以通过如下命令</td>
+<td></td>
+</tr>
+<tr>
+<td>–version</td>
+<td>Display version information and exit	5.7.9</td>
+<td></td>
+</tr>
+<tr>
+<td>–watch-progress</td>
+<td>定期显示进度的完成，包括总数表、行和其他对象。该参数默认开启，用–skip-watch-progress来关闭。</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="三-备份列子"><a class="markdownIt-Anchor" href="#三-备份列子"></a> 三、备份列子</h3>
+<ul>
+<li>备份指定数据库的结构和数据（包含结构、自定义函数、触发器和存储过程）</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># mysql 5.7.11 或以上版本</span><br><span class="line">mysqlpump -u root -p --add-drop-database --add-drop-table --triggers --routines --events --skip-definer lijiang_mq &gt; /Users/gadflybsd/PhpstormProjects/LiJiangCheLiangHuiJuTongJiXiTong/sql/backup.sql</span><br><span class="line"></span><br><span class="line"># mysql 5.7.11 以下版本</span><br><span class="line">mysqldump -u root -p --opt --routines --triggers --events lijiang_mq &gt; /Users/gadflybsd/PhpstormProjects/LiJiangCheLiangHuiJuTongJiXiTong/sql/backup.sql</span><br></pre></td></tr></table></figure>
+<ul>
+<li>备份数据库结构 （包含结构、自定义函数、触发器和存储过程）</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># mysql 5.7.11 或以上版本</span><br><span class="line">mysqlpump  -u root -p --skip-dump-rows --add-drop-database --add-drop-table --triggers --routines --events --skip-definer --databases lijiang_mq &gt; /Users/gadflybsd/PhpstormProjects/LiJiangCheLiangHuiJuTongJiXiTong/sql/tables_structure.sql</span><br><span class="line"></span><br><span class="line"># mysql 5.7.11 以下版本</span><br><span class="line">mysqldump  -u root -p --no-data --opt --add-drop-trigger --triggers --routines --events --databases lijiang_mq &gt; /Users/gadflybsd/PhpstormProjects/LiJiangCheLiangHuiJuTongJiXiTong/sql/tables_structure.sql</span><br></pre></td></tr></table></figure>
+<ul>
+<li>仅备份数据</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># mysql 5.7.11 或以上版本</span><br><span class="line">mysqlpump -u root -p --no-create-db --no-create-info --skip-triggers --skip-routines lijiang_mq &gt; /Users/gadflybsd/PhpstormProjects/LiJiangCheLiangHuiJuTongJiXiTong/sql/data.sql</span><br><span class="line"></span><br><span class="line"># mysql 5.7.11 以下版本</span><br><span class="line">mysqldump -u root -p --quick --no-create-db --no-create-info --skip-triggers lijiang_mq &gt; /Users/gadflybsd/PhpstormProjects/LiJiangCheLiangHuiJuTongJiXiTong/sql/data.sql</span><br></pre></td></tr></table></figure>
+<ul>
+<li>备份指定表的结构和数据（包含结构和触发器）</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># mysql 5.7.11 或以上版本</span><br><span class="line">mysqlpump -u root -p --add-drop-table --triggers --skip-definer --databases lijiang_mq --include-tables=lijiang_rocketmq &gt; /Users/gadflybsd/PhpstormProjects/LiJiangCheLiangHuiJuTongJiXiTong/sql/backup.sql</span><br><span class="line"></span><br><span class="line"># mysql 5.7.11 以下版本</span><br><span class="line">mysqldump -u root -p --opt --add-drop-trigger --triggers --databases lijiang_mq --tables=lijiang_rocketmq &gt; /Users/gadflybsd/PhpstormProjects/LiJiangCheLiangHuiJuTongJiXiTong/sql/backup.sql</span><br></pre></td></tr></table></figure>
+<ul>
+<li>备份指定表的结构（包含结构和触发器）</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># mysql 5.7.11 或以上版本</span><br><span class="line">mysqlpump  -u root -p --skip-dump-rows --add-drop-database --add-drop-table --triggers --skip-definer --databases lijiang_mq --include-tables=lijiang_rocketmq &gt; /Users/gadflybsd/PhpstormProjects/LiJiangCheLiangHuiJuTongJiXiTong/sql/lijiang_rocketmq.sql</span><br><span class="line"></span><br><span class="line"># mysql 5.7.11 以下版本</span><br><span class="line">mysqldump  -u root -p --no-data --no-create-db --no-create-info --opt --add-drop-trigger --triggers --databases lijiang_mq --tables=lijiang_rocketmq &gt; /Users/gadflybsd/PhpstormProjects/LiJiangCheLiangHuiJuTongJiXiTong/sql/lijiang_rocketmq.sql</span><br></pre></td></tr></table></figure>
+<ul>
+<li>仅备份指定表的数据</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># mysql 5.7.11 或以上版本</span><br><span class="line">mysqlpump -u root -p --no-create-db --no-create-info --skip-triggers --skip-routines --databases lijiang_mq --include-tables=lijiang_rocketmq &gt; /Users/gadflybsd/PhpstormProjects/LiJiangCheLiangHuiJuTongJiXiTong/sql/data.sql</span><br><span class="line"></span><br><span class="line"># mysql 5.7.11 以下版本</span><br><span class="line">mysqldump -u root -p --quick --no-create-db --no-create-info --skip-triggers --databases lijiang_mq --tables=lijiang_rocketmq &gt; /Users/gadflybsd/PhpstormProjects/LiJiangCheLiangHuiJuTongJiXiTong/sql/data.sql</span><br></pre></td></tr></table></figure>
+<h3 id="四-恢复"><a class="markdownIt-Anchor" href="#四-恢复"></a> 四、恢复</h3>
+<ul>
+<li>直接用 mysql 客户端</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mysql -uroot -p lijiang_mq &lt; /Users/gadflybsd/PhpstormProjects/LiJiangCheLiangHuiJuTongJiXiTong/sql/data.sql</span><br></pre></td></tr></table></figure>
+<ul>
+<li>在 mysql 客户端中使用 SOURCE 命令</li>
+</ul>
+<pre class="highlight"><code class="mysql">mysql -uroot -p
+mysql&gt; SOURCE /Users/gadflybsd/PhpstormProjects/LiJiangCheLiangHuiJuTongJiXiTong/sql/data.sql</code></pre>
+</div></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined" target="_blank" rel="noopener">Gadfly</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://blog.gadfly.pub/2019/12/12/shu-ju-jie-gou/mysql-de-shu-ju-jie-gou-bei-fen/">https://blog.gadfly.pub/2019/12/12/shu-ju-jie-gou/mysql-de-shu-ju-jie-gou-bei-fen/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://blog.gadfly.pub">牛虻的世界</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/MySQL/">MySQL    </a></div><div class="post_share"><div class="social-share" data-image="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/css/share.min.css"><script src="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/js/social-share.min.js"></script></div></div><div class="post-reward"><a class="reward-button"><i class="fa fa-qrcode"></i> 打赏<div class="reward-main"><ul class="reward-all"><li class="reward-item"><img class="lazyload post-qr-code__img" src="/img/wechat.jpg"><div class="post-qr-code__desc">微信</div></li><li class="reward-item"><img class="lazyload post-qr-code__img" src="/img/alipay.jpg"><div class="post-qr-code__desc">支付寶</div></li></ul></div></a></div><nav class="pagination_post" id="pagination"><div class="prev-post pull_left"><a href="/2019/12/12/shu-ju-jie-gou/mysql-de-yun-suan-fu/"><img class="prev_cover lazyload" data-src="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg.png" onerror="onerror=null;src='/img/404.jpg'"><div class="label">上一篇</div><div class="prev_info"><span>MySQL的运算符</span></div></a></div><div class="next-post pull_right"><a href="/2019/12/12/shu-ju-jie-gou/mysql-de-liu-cheng-kong-zhi-yu-ju/"><img class="next_cover lazyload" data-src="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg.png" onerror="onerror=null;src='/img/404.jpg'"><div class="label">下一篇</div><div class="next_info"><span>MySQL的流程控制语句</span></div></a></div></nav><div class="relatedPosts"><div class="relatedPosts_headline"><i class="fa fa-fw fa-thumbs-up" aria-hidden="true"></i><span> 相关推荐</span></div><div class="relatedPosts_list"><div class="relatedPosts_item"><a href="/2019/12/12/shu-ju-jie-gou/mysql-de-yun-suan-fu/" title="MySQL的运算符"><img class="relatedPosts_cover lazyload"data-src="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg.png"><div class="relatedPosts_title">MySQL的运算符</div></a></div></div><div class="clear_both"></div></div><hr><div id="post-comment"><div class="comment_headling"><i class="fa fa-comments fa-fw" aria-hidden="true"></i><span> 评论</span></div><div id="lv-container" data-id="city" data-uid="MTAyMC80Nzc4NC8yNDI4MQ=="><script>(function(d, s) {
+    var j, e = d.getElementsByTagName(s)[0];
+    if (typeof LivereTower === 'function') { return; }
+    j = d.createElement(s);
+    j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+    j.async = true;
+    e.parentNode.insertBefore(j, e);
+})(document, 'script');</script></div></div></div></div><footer id="footer" style="background-image: url(https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg.png)"><div id="footer-wrap"><div class="copyright">&copy;2019 By Gadfly</div><div class="framework-info"><span>驱动 </span><a href="http://hexo.io" target="_blank" rel="noopener"><span>Hexo</span></a><span class="footer-separator">|</span><span>主题 </span><a href="https://github.com/jerryc127/hexo-theme-butterfly" target="_blank" rel="noopener"><span>Butterfly</span></a></div><div class="icp"><a href="http://www.beian.miit.gov.cn/state/outPortal/loginPortal.action" target="_blank" rel="noopener"><img class="icp-icon" src="/img/icp.png"><span>滇ICP备 19010936</span></a></div></div></footer></div><section class="rightside" id="rightside"><div id="rightside-config-hide"><i class="fa fa-book" id="readmode" title="阅读模式"></i><i class="fa fa-plus" id="font_plus" title="放大字体"></i><i class="fa fa-minus" id="font_minus" title="缩小字体"></i><a class="translate_chn_to_cht" id="translateLink" href="javascript:translatePage();" title="简繁转换" target="_self">繁</a><i class="darkmode fa fa-moon-o" id="darkmode" title="夜间模式"></i></div><div id="rightside-config-show"><div id="rightside_config" title="设置"><i class="fa fa-cog" aria-hidden="true"></i></div><a id="to_comment" href="#post-comment" title="直达评论"><i class="scroll_to_comment fa fa-comments">  </i></a><i class="fa fa-list-ul close" id="mobile-toc-button" title="目录" aria-hidden="true"></i><i class="fa fa-arrow-up" id="go-up" title="回到顶部" aria-hidden="true"></i></div></section><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/medium-zoom/dist/medium-zoom.min.js"></script><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css"><script src="https://cdn.jsdelivr.net/npm/katex-copytex@latest/dist/katex-copytex.min.js"></script><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex-copytex@latest/dist/katex-copytex.min.css"><script>$(function () {
+  $('span.katex-display').wrap('<div class="katex-wrap"></div>')
+})</script><script async src="/js/search/local-search.js"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar@0.1.15/dist/snackbar.min.js"></script><script id="canvas_nest" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="/js/third-party/canvas-nest.js"></script><script src="/js/baidupush.js"> </script><script src="/js/tw_cn.js"></script><script>translateInitilization()
+</script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page@latest/instantpage.min.js" type="module"></script><script src="https://cdn.jsdelivr.net/npm/lazysizes@latest/lazysizes.min.js" async=""></script><script src="/js/third-party/click_heart.js"></script><div class="search-dialog" id="local-search"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章"></div></div></div><hr><div id="local-search-results"><div id="local-hits"></div><div id="local-stats"><div class="local-search-stats__hr" id="hr"><span>由</span> <a href="https://github.com/wzpan/hexo-generator-search" target="_blank" rel="noopener" style="color:#49B1F5;">hexo-generator-search</a>
+ <span>提供支持</span></div></div></div><span class="search-close-button"><i class="fa fa-times"></i></span></div><div class="search-mask"></div></body></html>
